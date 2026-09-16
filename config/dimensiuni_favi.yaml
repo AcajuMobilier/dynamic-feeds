@@ -1,0 +1,56 @@
+familii:
+  FAM_A:
+    Lungime: Lățime
+  FAM_B:
+    Adâncime: Lățime
+  FAM_PAT:
+    Lungime: Lățime
+    Adâncime: Lungime
+categorii:
+  Bucătărie > Mobilă de bucătărie > Scaune de bucătărie: FAM_A
+  Bucătărie > Mobilă de bucătărie > Scaune pentru bar: FAM_A
+  Bucătărie > Mobilă de bucătărie > Dulapuri de bucătărie: FAM_A
+  Bucătărie > Linii de bucătărie: FAM_A
+  Birou > Scaune de birou: FAM_A
+  Birou > Seturi de birou: FAM_A
+  Living > Fotolii: FAM_A
+  Living > Canapele: FAM_A
+  Living > Comode: FAM_A
+  Living > Vitrine: FAM_A
+  Living > Biblioteci: FAM_A
+  Living > Etajere: FAM_A
+  Living > Rafturi: FAM_A
+  Dormitor > Dulapuri de haine și dressinguri: FAM_A
+  Dormitor > Noptiere: FAM_A
+  Dormitor > Oglinzi: FAM_A
+  Hol > Dulapuri de pantofi: FAM_A
+  Hol > Taburete și banchete: FAM_A
+  Baie > Mobilă baie: FAM_A
+  Grădină > Scaune de grădină: FAM_A
+  Grădină > Bănci terasă și grădină: FAM_A
+  Grădină > Balansoare de grădină: FAM_A
+  Camera copiilor > Fotolii și scaune copii: FAM_A
+  Bucătărie > Mobilă de bucătărie > Mese de bucătărie: FAM_B
+  Bucătărie > Mobilă de bucătărie > Mese de bar: FAM_B
+  Birou > Mese de birou: FAM_B
+  Living > Măsuțe: FAM_B
+  Living > Otomane: FAM_B
+  Living > Fotolii puf: FAM_B
+  Dormitor > Măsuțe de toaletă: FAM_B
+  Dormitor > Saltele și accesorii: FAM_B
+  Dormitor > Cutii și coșuri pentru depozitare: FAM_B
+  Dormitor > Stative pentru haine: FAM_B
+  Hol > Mese consolă: FAM_B
+  Hol > Cuiere: FAM_B
+  Textile > Covoare: FAM_B
+  Textile > Draperii și perdele: FAM_B
+  Textile > Pilote și pături: FAM_B
+  Baie > Covorașe de baie: FAM_B
+  Camera copiilor > Covoare pentru copii: FAM_B
+  Textile > Lenjerii de pat: FAM_B
+  Textile > Textile pentru dormitor: FAM_B
+  Textile > Huse: FAM_B
+  Textile > Perne și fețe de perne: FAM_B
+  Textile > Textile baie: FAM_B
+  Grădină > Mese de grădină: FAM_B
+  Dormitor > Paturi: FAM_PAT

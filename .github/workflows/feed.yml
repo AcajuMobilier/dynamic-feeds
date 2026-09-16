@@ -1,0 +1,129 @@
+name: Feed Favi ocean.ro
+
+on:
+  # La fiecare 2 ore. Minutul 20, nu 0: fix la ora fixă GitHub e cel mai aglomerat
+  # și rulările programate întârzie sau se pierd.
+  schedule:
+    - cron: "20 */2 * * *"
+  # Butonul „Run workflow" din tabul Actions.
+  workflow_dispatch:
+    inputs:
+      fara_frana:
+        description: "Publică chiar dacă frâna de siguranță ar opri rularea"
+        type: boolean
+        default: false
+      limita:
+        description: "Oprește după N produse (doar pentru testarea frânei; 0 = fără limită)"
+        type: string
+        default: "0"
+  # La orice modificare de cod sau configurare pe ramura principală.
+  push:
+    branches: [main]
+    paths:
+      - "src/**"
+      - "config/**"
+      - "scripts/**"
+      - "tests/**"
+      - "genereaza.py"
+      - "requirements.txt"
+      - ".github/workflows/feed.yml"
+
+# Implicit, niciun job nu are drepturi. Fiecare job cere doar ce îi trebuie.
+permissions: {}
+
+# O singură publicare o dată. Rulările din coadă se aruncă, dar cea în curs
+# se lasă să se termine, ca să nu rămână Pages într-o stare incompletă.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  genereaza:
+    name: Generează și validează feedul
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    steps:
+      - name: Ia codul din repo
+        uses: actions/checkout@v7.0.1
+
+      - name: Pregătește Python
+        uses: actions/setup-python@v7.0.0
+        with:
+          python-version: "3.12"
+
+      - name: Instalează dependențele
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Rulează testele
+        run: python -m pytest tests -q
+
+      - name: Generează feedul
+        env:
+          SHOPIFY_STORE: ${{ secrets.SHOPIFY_STORE }}
+          SHOPIFY_TOKEN: ${{ secrets.SHOPIFY_TOKEN }}
+          SHOPIFY_CLIENT_ID: ${{ secrets.SHOPIFY_CLIENT_ID }}
+          SHOPIFY_CLIENT_SECRET: ${{ secrets.SHOPIFY_CLIENT_SECRET }}
+          FEED_LIVE_URL: "https://birzugeorge24-boop.github.io/dynamic-feeds/oceanfavi.xml"
+          # Opțiunile din butonul de rulare manuală ajung aici ca variabile de
+          # mediu, nu direct în comandă: altfel textul scris de om ar fi
+          # executat de shell.
+          FARA_FRANA: ${{ inputs.fara_frana }}
+          LIMITA: ${{ inputs.limita }}
+        run: |
+          set -euo pipefail
+          ARGUMENTE=()
+          if [ "${FARA_FRANA:-false}" = "true" ]; then
+            ARGUMENTE+=(--fara-frana)
+            echo "::warning::Frâna de siguranță a fost dezactivată manual pentru această rulare."
+          fi
+          if [ -n "${LIMITA:-}" ] && [ "${LIMITA}" != "0" ]; then
+            case "$LIMITA" in
+              ''|*[!0-9]*) echo "::error::Limita trebuie să fie un număr întreg."; exit 1 ;;
+            esac
+            ARGUMENTE+=(--limita "$LIMITA")
+            echo "::warning::Rulare limitată artificial la $LIMITA produse."
+          fi
+          python genereaza.py --iesire public "${ARGUMENTE[@]}"
+
+      - name: Adaugă pagina de index
+        run: python scripts/scrie_index.py public
+
+      - name: Pregătește GitHub Pages
+        uses: actions/configure-pages@v6.0.0
+
+      - name: Încarcă fișierele pentru publicare
+        uses: actions/upload-pages-artifact@v5.0.0
+        with:
+          path: public
+          retention-days: 7
+
+  publica:
+    name: Publică pe GitHub Pages
+    needs: genereaza
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.publicare.outputs.page_url }}
+    steps:
+      - name: Publică
+        id: publicare
+        uses: actions/deploy-pages@v5.0.1
+
+      - name: Scrie adresele în rezumat
+        run: |
+          {
+            echo "## Publicat"
+            echo ""
+            echo "- Feed: ${{ steps.publicare.outputs.page_url }}oceanfavi.xml"
+            echo "- Raport: ${{ steps.publicare.outputs.page_url }}raport.csv"
+            echo ""
+            echo "Publicarea poate dura până la 10 minute până se vede la adresa de mai sus."
+          } >> "$GITHUB_STEP_SUMMARY"

@@ -1,0 +1,4 @@
+# Dependențele sistemului. Versiuni minime, ca să nu se strice la actualizări.
+beautifulsoup4>=4.12
+PyYAML>=6.0
+pytest>=8.0

@@ -1,0 +1,76 @@
+redenumiri:
+  Lungime: Lungime
+  Latime: Lățime
+  Adancime: Adâncime
+  Inaltime: Înălțime
+  Inaltime totala: Înălțime totală
+  Inaltime sezut: Înălțime șezut
+  Inaltime pana la sezut: Înălțime șezut
+  Grosime(cm): Grosime
+  Grosime: Grosime
+  Dimensiuni: Dimensiuni
+  Greutate: Greutate
+  Greutate maxima suportata: Greutate maximă suportată
+  Greutatea maxima suportata: Greutate maximă suportată
+  Capacitate maxima suportata: Greutate maximă suportată
+  Capacitate maxima greutate: Greutate maximă suportată
+  Culoare: Culoare
+  Culoare picioare: Culoare picioare
+  Culoare sezut: Culoare șezut
+  Culoare blat: Culoare blat
+  Culoare cadru: Culoare cadru
+  Material: Material
+  Materiale: Material
+  Material sezut: Material șezut
+  Material picioare: Material picioare
+  Material blat: Material blat
+  Material cadru: Material cadru
+  Material manere: Material mânere
+  Materiale masa: Material masă
+  Materiale scaune: Material scaune
+  Forma: Formă
+  Garantie: Garanție
+  Numar sertare: Număr sertare
+  Numar usi: Număr uși
+  Numar Usi: Număr uși
+  Numar piese: Număr piese
+  Numar corpuri: Număr corpuri
+  Numar persoane: Număr persoane
+  Extensibila: Extensibilă
+  Picioare: Cu picioare
+  Cu brate: Cu brațe
+  Cu rafturi: Cu rafturi
+  Spatiu depozitare: Spațiu de depozitare
+  Spatiu de depozitare: Spațiu de depozitare
+  Tip (usi, sertare, rafturi): Tip
+  Tip (usi, sertare): Tip
+  Tip: Tip
+  Tip fotoliu: Tip fotoliu
+  Tip comoda: Tip comodă
+  Tip somiera: Tip somieră
+  Sistem: Sistem
+  Sistem de inchidere: Sistem de închidere
+  Saltea: Saltea inclusă
+  Somiera pat: Somieră inclusă
+  Pentru saltea cu dimensiunea: Pentru saltea cu dimensiunea
+  Setul contine: Setul conține
+  Detalii tehnice: Detalii tehnice
+  Fermitatea saltelei: Fermitatea saltelei
+  Compartimentare: Compartimentare
+  Dimensiune masa mare: Dimensiune masă mare
+  Dimensiune masa mica: Dimensiune masă mică
+ignorate:
+- Categorie
+unitate_cm:
+- Adâncime
+- Diametru
+- Dimensiuni
+- Grosime
+- Lungime
+- Lățime
+- Înălțime
+- Înălțime totală
+- Înălțime șezut
+unitate_kg:
+- Greutate
+- Greutate maximă suportată

@@ -1,0 +1,28 @@
+# Secrete locale — NU se comit niciodată
+.env
+.env.*
+!.env.example
+
+# Ieșiri generate local (feedul se publică prin GitHub Pages, nu prin git)
+out/
+*.xml
+!tests/fixtures/*.xml
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+
+# Editoare / sistem
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Claude Code local
+.claude/
+
+# Folderul de publicare (se generează în workflow, nu se comite)
+public/

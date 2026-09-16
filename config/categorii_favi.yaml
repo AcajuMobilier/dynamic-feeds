@@ -1,0 +1,108 @@
+dupa_type:
+  Scaune: Bucătărie > Mobilă de bucătărie > Scaune de bucătărie
+  Masa: Bucătărie > Mobilă de bucătărie > Mese de bucătărie
+  Masuta: Living > Măsuțe
+  Fotolii: Living > Fotolii
+  Comoda: Living > Comode
+  Paturi: Dormitor > Paturi
+  Scaune birou: Birou > Scaune de birou
+  Scaun gaming: Birou > Scaune de birou
+  Scaun bar: Bucătărie > Mobilă de bucătărie > Scaune pentru bar
+  Masa bar: Bucătărie > Mobilă de bucătărie > Mese de bar
+  Dulap: Dormitor > Dulapuri de haine și dressinguri
+  Dressing: Dormitor > Dulapuri de haine și dressinguri
+  Noptiere: Dormitor > Noptiere
+  Covor Living: Textile > Covoare
+  Covor Hol: Textile > Covoare
+  Covor Dormitor: Textile > Covoare
+  Covoare Pufoase: Textile > Covoare
+  Taburet: Living > Otomane
+  Pantofar: Hol > Dulapuri de pantofi
+  Vitrina: Living > Vitrine
+  Birouri: Birou > Mese de birou
+  Masa birou: Birou > Mese de birou
+  Set birou: Birou > Seturi de birou
+  Saltele: Dormitor > Saltele și accesorii
+  Somiera: Dormitor > Saltele și accesorii
+  Biblioteca: Living > Biblioteci
+  Bucatarii: Bucătărie > Linii de bucătărie
+  Dulap bucatarie: Bucătărie > Mobilă de bucătărie > Dulapuri de bucătărie
+  Canapele: Living > Canapele
+  Coltare: Living > Canapele
+  Bancheta: Hol > Taburete și banchete
+  Polita: Living > Etajere
+  Etajera: Living > Etajere
+  Rafturi: Living > Rafturi
+  Lenjerii de pat: Textile > Lenjerii de pat
+  PACHET-TEXTILE: Textile > Lenjerii de pat
+  Cuverturi pat: Textile > Textile pentru dormitor
+  Huse de pat: Textile > Huse
+  Perne si fete de perna: Textile > Perne și fețe de perne
+  Halat de baie: Textile > Textile baie
+  Scaune Gradina: Grădină > Scaune de grădină
+  Masa gradina: Grădină > Mese de grădină
+  Banca gradina: Grădină > Bănci terasă și grădină
+  Set mobilier gradina: Grădină > Seturi de grădină
+  Set masa si scaune gradina: Grădină > Seturi de grădină
+  Oglinda perete: Dormitor > Oglinzi
+  Oglinda de podea: Dormitor > Oglinzi
+  Oglinzi: Dormitor > Oglinzi
+  Set Masa si Scaune: Bucătărie > Mobilă de bucătărie > Seturi de mese si scaune
+  Cuier: Hol > Cuiere
+  Cuier pom: Hol > Cuiere
+  Living: Living > Mobilă living
+  Masa toaleta: Dormitor > Măsuțe de toaletă
+  Hol: Hol > Mobilă pereți hol
+  Balansoar: Living > Fotolii
+  Consola: Hol > Mese consolă
+  Dulap baie: Baie > Mobilă baie
+  Baie: Baie > Mobilă baie
+  Suport uscator rufe: Baie > Accesorii pentru baie
+  Fotoliu puf: Living > Fotolii puf
+  Dormitor: Dormitor > Seturi de dormitor
+  Lampa: Corpuri de iluminat > Lustre
+  Veioza: Corpuri de iluminat > Lămpi de masă
+  Cutie depozitare: Dormitor > Cutii și coșuri pentru depozitare
+  Stander haine: Dormitor > Stative pentru haine
+  Pentru Copii: Camera copiilor > Fotolii și scaune copii
+  Ghiveci: Decorațiuni > Ghivece de flori
+  Accesorii decorative: Decorațiuni > Mici decorațiuni
+  Dulap dormitor: Dormitor > Dulapuri de haine și dressinguri
+  Etajera baie: Baie > Mobilă baie
+  Balansoar Gradina: Grădină > Balansoare de grădină
+  Lustre: Corpuri de iluminat > Lustre
+  Aplica: Corpuri de iluminat > Aplice
+  Tablouri: Decorațiuni > Tablouri
+  Ceas de perete: Decorațiuni > Ceasuri
+  Gradina: Grădină > Decorațiuni de grădină
+  Fotoliu Gradina: Grădină > Scaune de grădină
+  Covor Baie: Baie > Covorașe de baie
+  Covor Copii: Camera copiilor > Covoare pentru copii
+  Covor intrare: Textile > Covoare
+  Prosoape: Textile > Textile baie
+  Draperii: Textile > Draperii și perdele
+  Pilote si plapumi: Textile > Pilote și pături
+  Accesorii baie: Baie > Accesorii pentru baie
+  Organizator baie: Baie > Accesorii pentru baie
+  Stander prosoape: Baie > Accesorii pentru baie
+  Suport umerase: Dormitor > Stative pentru haine
+  Tava si platouri: Bucătărie > Veselă
+  Set farfurii: Bucătărie > Veselă
+  Ustensile bucatarie: Bucătărie > Ustensile de bucătărie
+  Suporturi bucatarie: Bucătărie > Ustensile de bucătărie
+  Borcane si Recipiente bucatarie: Bucătărie > Depozitarea alimentelor
+
+# Corecții punctuale după titlu. Au prioritate față de „dupa_type".
+# Fiecare intrare: „potrivire" e o expresie regulată căutată în titlu (fără majuscule).
+# Ordinea contează: prima potrivire câștigă.
+dupa_titlu:
+  - potrivire: 'suport\s+umbrel'
+    categorie: "Hol > Suporturi umbrelă"
+  - potrivire: 'rama\s+iluminatoare'
+    categorie: "Living > Mobilă living"
+  - potrivire: 'scaun\s+de\s+bar'
+    categorie: "Bucătărie > Mobilă de bucătărie > Scaune pentru bar"
+  - potrivire: 'canapea'
+    categorie: "Living > Canapele"
+  - potrivire: 'coltar|colțar'
+    categorie: "Living > Canapele"
