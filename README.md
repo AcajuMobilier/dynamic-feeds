@@ -20,7 +20,7 @@ Raportul cu produsele problematice **nu se publică**, pentru că include produs
 2. Le transformă în format Heureka, așa cum cere Favi.
 3. Verifică rezultatul: fără ID-uri sau adrese duplicate, fără linkuri în descrieri, prețuri în format corect.
 4. Compară cu feedul aflat online. Dacă numărul de produse scade brusc, nu publică nimic și rularea eșuează vizibil.
-5. Publică feedul și raportul pe GitHub Pages.
+5. Publică feedul pe GitHub Pages. Raportul rămâne privat, în pagina rulării.
 
 Un produs intră în feed doar dacă are tagul, e publicat pe Online Store, are o categorie mapabilă, cel puțin o imagine și un preț. Orice produs care pică e trecut în raport cu motivul exact.
 
