@@ -87,15 +87,30 @@ jobs:
             ARGUMENTE+=(--limita "$LIMITA")
             echo "::warning::Rulare limitată artificial la $LIMITA produse."
           fi
-          python genereaza.py --iesire public "${ARGUMENTE[@]}"
+          # Feedul merge în „public" (se publică pe Pages), raportul în
+          # „raport" (rămâne privat, se descarcă doar din pagina rulării).
+          python genereaza.py --iesire public --iesire-raport raport "${ARGUMENTE[@]}"
 
       - name: Adaugă pagina de index
         run: python scripts/scrie_index.py public
 
+      - name: Păstrează raportul, fără să-l publice
+        # Raportul conține titluri și numere de produse nepublicate sau
+        # arhivate, deci nu are ce căuta la o adresă publică. Se descarcă din
+        # pagina rulării, de la secțiunea „Artifacts", doar de cine are acces
+        # la repo. Se păstrează 30 de zile.
+        if: always()
+        uses: actions/upload-artifact@v7.0.1
+        with:
+          name: raport
+          path: raport
+          retention-days: 30
+          if-no-files-found: warn
+
       - name: Pregătește GitHub Pages
         uses: actions/configure-pages@v6.0.0
 
-      - name: Încarcă fișierele pentru publicare
+      - name: Încarcă feedul pentru publicare
         uses: actions/upload-pages-artifact@v5.0.0
         with:
           path: public

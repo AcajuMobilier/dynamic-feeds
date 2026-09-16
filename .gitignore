@@ -24,5 +24,6 @@ Thumbs.db
 # Claude Code local
 .claude/
 
-# Folderul de publicare (se generează în workflow, nu se comite)
+# Foldere generate la rulare (nu se comit)
 public/
+raport/

@@ -7,7 +7,8 @@ Rulare locală:
 
 Opțiuni:
     --magazin ocean        fișierul de configurare din config/ (implicit: ocean)
-    --iesire out           folderul în care se scriu feedul și raportul
+    --iesire out           folderul în care se scrie feedul
+    --iesire-raport out    folderul în care se scrie raportul (implicit: lângă feed)
     --feed-live URL        feedul publicat, pentru frâna de siguranță
     --prag 70              procentul minim față de feedul live
     --limita N             oprește după N produse (doar pentru teste)
@@ -47,6 +48,9 @@ def main() -> int:
     ap = argparse.ArgumentParser(add_help=True)
     ap.add_argument("--magazin", default="ocean")
     ap.add_argument("--iesire", default="out")
+    ap.add_argument("--iesire-raport", default=None,
+                    help="Folder separat pentru raport. Implicit se scrie lângă feed. "
+                         "Pe GitHub raportul merge într-un folder care NU se publică.")
     ap.add_argument("--feed-live", default=os.environ.get("FEED_LIVE_URL", ""))
     ap.add_argument("--prag", type=float, default=None)
     ap.add_argument("--limita", type=int, default=0)
@@ -58,6 +62,8 @@ def main() -> int:
     prag = args.prag if args.prag is not None else cfg.prag_minim_procent
     folder = (RADACINA / args.iesire)
     folder.mkdir(parents=True, exist_ok=True)
+    folder_raport = (RADACINA / args.iesire_raport) if args.iesire_raport else folder
+    folder_raport.mkdir(parents=True, exist_ok=True)
     raport = Raport()
 
     # ---------------------------------------------------------------- 1. extragere
@@ -118,7 +124,7 @@ def main() -> int:
     xml_text = favi.construieste_xml(itemuri)
 
     cale_feed = folder / cfg.fisier_feed
-    cale_raport = folder / cfg.fisier_raport
+    cale_raport = folder_raport / cfg.fisier_raport
     cale_feed.write_text(xml_text, encoding="utf-8")
     raport.scrie_csv(cale_raport)
 
@@ -160,6 +166,11 @@ def main() -> int:
         "### Produse problematice",
         "",
         raport.rezumat_markdown(),
+        "",
+        ("Raportul complet, cu o linie per produs, e în secțiunea **Artifacts** "
+         "de pe această pagină, în arhiva `raport`. Nu se publică la o adresă "
+         "publică, pentru că include produse nepublicate sau arhivate."),
+        "",
     ]
     if rezultat.avertizari:
         rezumat += ["### Avertismente", ""] + [f"- {a}" for a in rezultat.avertizari] + [""]

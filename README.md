@@ -8,7 +8,9 @@ Generează automat feedul XML pentru **Favi.ro** din produsele magazinului Shopi
 https://birzugeorge24-boop.github.io/dynamic-feeds/oceanfavi.xml
 ```
 
-Lângă el, la [`raport.csv`](https://birzugeorge24-boop.github.io/dynamic-feeds/raport.csv), stă raportul cu produsele problematice, iar la [adresa de bază](https://birzugeorge24-boop.github.io/dynamic-feeds/) o pagină care arată câte produse are fiecare fișier și când a fost generat ultima dată.
+La [adresa de bază](https://birzugeorge24-boop.github.io/dynamic-feeds/) e o pagină care arată câte produse are feedul și când a fost generat ultima dată.
+
+Raportul cu produsele problematice **nu se publică**, pentru că include produse nepublicate sau arhivate. Îl descarci din pagina rulării, vezi mai jos.
 
 ---
 
@@ -46,7 +48,17 @@ Rularea programată pornește singură la fiecare 2 ore. Poți porni una manual 
 
 ## Cum citesc raportul
 
-`raport.csv` se deschide în Excel. Are cinci coloane: motivul, explicația în română, ID-ul, titlul produsului și detaliile. O linie per problemă.
+Raportul e privat: îl vede doar cine are acces la repo. Ca să-l iei:
+
+1. Tabul **Actions** → în stânga, **Feed Favi ocean.ro** → click pe rularea care te interesează.
+2. Derulează până jos, la secțiunea **Artifacts**.
+3. Click pe **raport**. Se descarcă o arhivă zip cu `raport.csv` înăuntru.
+
+Rapoartele se păstrează 30 de zile, apoi se șterg singure.
+
+`raport.csv` se deschide în Excel. Are șase coloane: motivul, explicația în română, ID-ul, dacă ID-ul e al produsului sau al variantei, titlul și detaliile. O linie per problemă.
+
+Un rezumat pe motive apare direct în **Summary**-ul rulării, fără să descarci nimic.
 
 Motivele care înseamnă că produsul **nu a intrat** în feed:
 
