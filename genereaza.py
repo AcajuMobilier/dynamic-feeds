@@ -63,13 +63,21 @@ def main() -> int:
     # ---------------------------------------------------------------- 1. extragere
     store, token, client_id, client_secret = credentiale()
     if not store:
-        print("EROARE: lipsește SHOPIFY_STORE (în .env local sau în Secrets pe GitHub).")
+        mesaj = ("Lipsește **SHOPIFY_STORE**. Pe GitHub se pune la "
+                 "Settings → Secrets and variables → Actions → New repository secret, "
+                 "cu valoarea `numele-magazinului.myshopify.com`. Local se pune în fișierul `.env`.")
+        print("EROARE: " + mesaj.replace("**", "").replace("`", ""))
+        _sumar("## Rulare eșuată\n\n" + mesaj + "\n")
+        return 2
+    if not token and not (client_id and client_secret):
+        mesaj = ("Lipsesc credențialele Shopify. E nevoie fie de **SHOPIFY_TOKEN** "
+                 "(tokenul care începe cu `shpat_`), fie de **SHOPIFY_CLIENT_ID** "
+                 "împreună cu **SHOPIFY_CLIENT_SECRET**. Pe GitHub se pun la "
+                 "Settings → Secrets and variables → Actions.")
+        print("EROARE: " + mesaj.replace("**", "").replace("`", ""))
+        _sumar("## Rulare eșuată\n\n" + mesaj + "\n")
         return 2
     if not token:
-        if not (client_id and client_secret):
-            print("EROARE: lipsesc credențialele Shopify. Completează SHOPIFY_TOKEN, "
-                  "sau SHOPIFY_CLIENT_ID și SHOPIFY_CLIENT_SECRET.")
-            return 2
         print("Obțin tokenul din Client ID + Client secret...")
         try:
             token = extragere.obtine_token(
