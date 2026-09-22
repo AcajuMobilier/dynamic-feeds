@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import re
 
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, NavigableString, Tag
 
 RE_NA = re.compile(r"^\s*(N/?A\.?(\s*(kg|cm|mm|m|l))?|-|–|\?|nespecificat)\s*$", re.I)
 RE_NUM = re.compile(r"^[\d.,]+(\s*[-–±]\s*[\d.,]+)?$")
@@ -136,12 +136,123 @@ def extrage_parametri(soup, cfg) -> list[tuple[str, str]]:
     return parametri
 
 
+# ---------------------------------------------------------------- structura descrierii
+# Favi acceptă tagurile inline, dar rendererul lor le afișează ca text când
+# stau direct la rădăcina descrierii, în afara unui bloc. Cazul tipic vine din
+# Shopify: <div><strong>TITLU</strong></div>, iar <div> nu e permis și se
+# desface, lăsând <strong> singur la rădăcină.
+TAGURI_INLINE = ["strong", "b", "em", "i"]
+TAGURI_BLOC = {"p", "ul", "ol"}
+
+
+def _e_gol(text) -> bool:
+    """Doar spații, &nbsp; sau caractere invizibile de lățime zero."""
+    return not str(text).replace("​", "").replace("﻿", "").strip()
+
+
+def _e_br(nod) -> bool:
+    return isinstance(nod, Tag) and nod.name == "br"
+
+
+def _e_spatiu(nod) -> bool:
+    return isinstance(nod, NavigableString) and _e_gol(nod)
+
+
+def _sterge_inline_goale(soup) -> None:
+    """<strong>, <b>, <em>, <i> goale sau doar cu spații dispar.
+
+    Tagul se desface, nu se șterge cu tot cu conținut: un spațiu dintre două
+    cuvinte sau un <br> dinăuntru rămân pe loc. Se repetă până nu mai rămâne
+    niciunul, ca să prindă și cazurile imbricate (<b><strong> </strong></b>).
+    """
+    while True:
+        goale = [t for t in soup.find_all(TAGURI_INLINE) if _e_gol(t.get_text())]
+        if not goale:
+            return
+        for tag in reversed(goale):         # copiii înaintea părinților
+            if tag.parent is not None:
+                tag.unwrap()
+
+
+def _tunde_margini(bloc) -> None:
+    """Scoate <br>-urile și spațiile de la începutul și sfârșitul unui bloc."""
+    while bloc.contents and (_e_br(bloc.contents[0]) or _e_spatiu(bloc.contents[0])):
+        bloc.contents[0].extract()
+    while bloc.contents and (_e_br(bloc.contents[-1]) or _e_spatiu(bloc.contents[-1])):
+        bloc.contents[-1].extract()
+
+
+def _normalizeaza_radacina(soup) -> None:
+    """La rădăcina descrierii rămân doar blocuri <p>, <ul>, <ol>.
+
+    Textul și elementele inline aflate direct la rădăcină (strong, b, em, i,
+    <br>-uri) se strâng în paragrafe. <br>-urile și spațiile rămase singure
+    între blocuri dispar, la fel cele de la marginea descrierii. Un <li>
+    rătăcit la rădăcină primește o listă <ul> în jurul lui.
+    """
+    noduri = [n.extract() for n in list(soup.contents)]
+    blocuri, grup = [], []
+    lista = None
+
+    def inchide_grup():
+        if grup and not all(_e_br(n) or _e_spatiu(n) for n in grup):
+            p = soup.new_tag("p")
+            for n in grup:
+                p.append(n)
+            _tunde_margini(p)
+            blocuri.append(p)
+        grup.clear()
+
+    for nod in noduri:
+        if isinstance(nod, Tag) and nod.name == "li":
+            inchide_grup()
+            if lista is None:
+                lista = soup.new_tag("ul")
+                blocuri.append(lista)
+            lista.append(nod)
+        elif isinstance(nod, Tag) and nod.name in TAGURI_BLOC:
+            inchide_grup()
+            lista = None
+            # un <p> gol desparte conținutul din jur, dar nu apare în rezultat
+            if not (nod.name == "p" and _e_gol(nod.get_text())):
+                blocuri.append(nod)
+        elif not grup and (_e_br(nod) or _e_spatiu(nod)):
+            continue                        # nimic de păstrat între blocuri
+        else:
+            lista = None
+            grup.append(nod)
+    inchide_grup()
+
+    # <br>-urile de la începutul și finalul întregii descrieri
+    if blocuri and blocuri[0].name == "p":
+        _tunde_margini(blocuri[0])
+    if blocuri and blocuri[-1].name == "p":
+        _tunde_margini(blocuri[-1])
+
+    for i, bloc in enumerate(blocuri):
+        if i:
+            soup.append(NavigableString("\n"))
+        soup.append(bloc)
+
+
+def _sterge_paragrafe_goale(soup) -> None:
+    """<p>-urile rămase fără text dispar, inclusiv cele care au doar <br>."""
+    for p in soup.find_all("p"):
+        if p.parent is not None and _e_gol(p.get_text()):
+            p.decompose()
+
+
 def construieste_descriere(body_html: str, cfg) -> tuple[str, list[tuple[str, str]]]:
     """Scoate tabelele de specificații și lasă doar HTML-ul permis de Favi."""
     soup = BeautifulSoup(body_html or "", "html.parser")
     parametri = extrage_parametri(soup, cfg)
     for tabel in soup.find_all("table"):
         tabel.decompose()
+    # <style> și <script> se scot cu tot cu conținut. Desfăcute ca celelalte
+    # taguri nepermise, ar lăsa CSS-ul sau codul ca text vizibil pe Favi
+    # (apare în descrieri lipite din Excel: <style><!-- td {border...} --></style>).
+    for tag in soup.find_all(["style", "script"]):
+        tag.decompose()
     # titlurile devin paragrafe bold (Favi nu acceptă h1–h6)
     for tag in soup.find_all(["h1", "h2", "h3", "h4", "h5", "h6"]):
         tag.name = "p"
@@ -165,6 +276,11 @@ def construieste_descriere(body_html: str, cfg) -> tuple[str, list[tuple[str, st
         txt = RE_EMAIL.sub("", txt)
         if txt != str(nod):
             nod.replace_with(txt)
+    # structură pe blocuri: rendererul Favi afișează tagurile ca text când
+    # găsește conținut inline direct la rădăcina descrierii
+    _sterge_inline_goale(soup)
+    _normalizeaza_radacina(soup)
+    _sterge_paragrafe_goale(soup)
     htm = str(soup)
     htm = re.sub(r"<p>(\s|&nbsp;|<br\s*/?>)*</p>", "", htm)   # paragrafe goale
     htm = re.sub(r"<ul>\s*</ul>|<ol>\s*</ol>", "", htm)       # liste goale

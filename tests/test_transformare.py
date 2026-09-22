@@ -449,3 +449,75 @@ def test_frana_lasa_sa_treaca_o_scadere_mica():
 def test_frana_se_sare_la_prima_rulare():
     poate, mesaj = validare.verifica_frana(2227, None, 70)
     assert poate and "prima rulare" in mesaj
+
+
+# ------------------------------------------------------------------ structura descrierii
+# Rendererul Favi afișează tagurile ca text când conținutul inline stă direct
+# la rădăcina descrierii. Fixture-ul e descrierea reală a produsului
+# „Masa extensibila WENANTY" (ITEM_ID 49674480091466), unde bug-ul a fost văzut.
+FIXTURES = Path(__file__).resolve().parent / "fixtures"
+
+
+def _blocuri_radacina(descriere):
+    from bs4 import BeautifulSoup, NavigableString
+    soup = BeautifulSoup(descriere, "html.parser")
+    return [("text" if isinstance(n, NavigableString) else n.name)
+            for n in soup.contents if not (isinstance(n, NavigableString) and not n.strip())]
+
+
+def test_wenanty_descrierea_incepe_cu_titlul_in_paragraf(cfg):
+    brut = (FIXTURES / "descriere_wenanty.html").read_text(encoding="utf-8")
+    descriere, parametri = construieste_descriere(brut, cfg)
+    assert descriere.startswith(
+        "<p><strong>MASA EXTENSIBILA WENANTY, STEJAR, 160/240X100X77 CM</strong></p>")
+    assert "<strong></strong>" not in descriere
+    assert set(_blocuri_radacina(descriere)) <= {"p", "ul", "ol"}
+    assert len(parametri) == 11          # tabelul se citește în continuare
+
+
+@pytest.mark.parametrize("brut", [
+    "<p>A<strong></strong>B</p>",
+    "<p>A<strong> </strong>B</p>",
+    "<p>A<em>\xa0</em>B</p>",
+    "<p>A<b><strong> <i></i> </strong></b>B</p>",
+])
+def test_tagurile_inline_goale_dispar(cfg, brut):
+    descriere, _ = construieste_descriere(brut, cfg)
+    for tag in ("strong", "b", "em", "i"):
+        assert f"<{tag}>" not in descriere
+
+
+def test_spatiul_din_tagul_gol_ramane_intre_cuvinte(cfg):
+    descriere, _ = construieste_descriere("<p>unu<strong> </strong>doi</p>", cfg)
+    assert descriere == "<p>unu doi</p>"
+
+
+def test_continutul_inline_de_la_radacina_intra_in_paragraf(cfg):
+    descriere, _ = construieste_descriere(
+        "<div><strong>Titlu</strong> text</div><ul><li>a</li></ul>simplu<br/>rand", cfg)
+    assert descriere == ("<p><strong>Titlu</strong> text</p>\n<ul><li>a</li></ul>\n"
+                         "<p>simplu<br/>rand</p>")
+
+
+def test_br_de_la_margini_si_paragrafele_goale_dispar(cfg):
+    descriere, _ = construieste_descriere(
+        "<br/><br/><div><strong></strong><br></div><p> </p><p><br/></p>"
+        "<p>Text</p><br/><br/>", cfg)
+    assert descriere == "<p>Text</p>"
+
+
+def test_li_ratacit_la_radacina_primeste_lista(cfg):
+    descriere, _ = construieste_descriere("<li>a</li><li>b</li><p>c</p>", cfg)
+    assert descriere == "<ul><li>a</li><li>b</li></ul>\n<p>c</p>"
+    assert set(_blocuri_radacina(descriere)) <= {"p", "ul", "ol"}
+
+
+def test_blocul_style_nu_ajunge_text_in_descriere(cfg):
+    """Descrierile lipite din Excel aduc un <style> cu CSS; desfăcut, CSS-ul
+    ar apărea ca text pe Favi."""
+    brut = ('<p>Nota</p>\n<style type="text/css"><!--\ntd {border: 1px solid #ccc;}\n--></style>'
+            '<p><br></p> <p><strong>Atenție</strong></p><p>x<script>alert(1)</script></p>')
+    descriere, _ = construieste_descriere(brut, cfg)
+    assert "td {" not in descriere and "border" not in descriere
+    assert "alert" not in descriere
+    assert descriere == "<p>Nota</p>\n<p><strong>Atenție</strong></p>\n<p>x</p>"
