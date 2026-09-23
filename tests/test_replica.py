@@ -25,6 +25,12 @@ from src.raport import Raport                                 # noqa: E402
 
 FIX = Path(__file__).resolve().parent / "fixtures" / "mulwi"
 
+
+def _citeste_exact(cale):
+    """Conținutul octet cu octet (fără conversia terminațiilor de linie)."""
+    with open(cale, encoding="utf-8", newline="") as f:
+        return f.read()
+
 CAZURI = [
     ("oceangoogle", "7281974804652"),
     ("oceanfb", "7281974804652"),
@@ -50,19 +56,19 @@ def _fara_etichete_goale(item):
 
 @pytest.mark.parametrize("feed,pid", CAZURI)
 def test_itemul_este_identic_cu_mulwi(feed, pid):
-    referinta = (FIX / f"{feed}_{pid}.item.txt").read_text(encoding="utf-8", newline="")
+    referinta = _citeste_exact(FIX / f"{feed}_{pid}.item.txt")
     assert _item_generat(feed, pid, omite_goale=False) == referinta
 
 
 @pytest.mark.parametrize("feed,pid", CAZURI)
 def test_cu_etichetele_goale_omise_restul_ramane_identic(feed, pid):
-    referinta = (FIX / f"{feed}_{pid}.item.txt").read_text(encoding="utf-8", newline="")
+    referinta = _citeste_exact(FIX / f"{feed}_{pid}.item.txt")
     assert _item_generat(feed, pid, omite_goale=True) == _fara_etichete_goale(referinta)
 
 
 def test_dsa_primele_randuri_sunt_identice():
     cfg = Configurare("acajudsa")
-    referinta = (FIX / "acajudsa_primele.csv").read_text(encoding="utf-8", newline="")
+    referinta = _citeste_exact(FIX / "acajudsa_primele.csv")
     produse = [
         {"id": "1", "handle": "canapea-extensibila-gandi-160-stofa-catifelata-mov-lila-monolith-62-cu-tetiere-reglabile-227x102x95-cm", "tip": "Canapele"},
         {"id": "2", "handle": "canapea-extensibila-gandi-160-stofa-catifelata-verde-cloud-39-gama-premium-cu-tetiere-reglabile-227x102x95-cm", "tip": "Canapele"},
