@@ -1,0 +1,3 @@
+# Fixture-urile copiate din feedurile Mulwi trebuie sa ramana octet cu octet
+# (CRLF la XML-uri, LF la CSV); git nu le normalizeaza.
+tests/fixtures/** -text
