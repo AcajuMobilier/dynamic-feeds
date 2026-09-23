@@ -256,3 +256,93 @@ def verifica_frana(numar_nou: int, live, prag_procent: float):
                        f"Feedul vechi rămâne publicat.")
     return True, (f"Frâna de siguranță: {numar_nou} produse noi față de {numar_live} live "
                   f"({procent:.1f}%), peste pragul de {prag_procent:.0f}%.")
+
+
+# ---------------------------------------------------------------- RSS (Google, Facebook, RTB)
+NS_G = "{http://base.google.com/ns/1.0}"
+RE_PRET_RON = re.compile(r"^\d+(\.\d+)? RON$")
+
+
+def valideaza_rss(text: str, cfg, camp_id: str, camp_link: str) -> Rezultat:
+    """Verificările minime înainte de publicare pentru un feed RSS replicat:
+    XML bine format, ID-uri și adrese unice, prețuri „N RON", câmpuri
+    obligatorii prezente."""
+    r = Rezultat()
+    try:
+        root = ET.fromstring(text)
+    except ET.ParseError as e:
+        r.erori.append(f"XML invalid: {e}")
+        return r
+    itemuri = root.findall("./channel/item")
+    r.numar_produse = len(itemuri)
+    if not itemuri:
+        r.erori.append("Feedul e gol: niciun item.")
+        return r
+
+    def cauta(item, nume):
+        if nume.startswith("g:"):
+            return item.findtext(NS_G + nume[2:])
+        return item.findtext(nume)
+
+    ids, linkuri = [], []
+    preturi_gresite = fara_id = fara_link = fara_titlu = fara_imagine = 0
+    for item in itemuri:
+        i = (cauta(item, camp_id) or "").strip()
+        if not i:
+            fara_id += 1
+        ids.append(i)
+        adresa = (cauta(item, camp_link) or "").strip()
+        if not adresa.startswith("https://"):
+            fara_link += 1
+        linkuri.append(adresa)
+        if not (cauta(item, "title") or cauta(item, "product_name") or "").strip():
+            fara_titlu += 1
+        if not (cauta(item, "g:image_link") or cauta(item, "image_link") or "").strip():
+            fara_imagine += 1
+        for camp in ("g:price", "g:sale_price", "price", "sale_price"):
+            val = cauta(item, camp)
+            if val is not None and not RE_PRET_RON.match(val.strip()):
+                preturi_gresite += 1
+    dubluri = [i for i, n in Counter(ids).items() if n > 1 and i]
+    if dubluri:
+        r.erori.append(f"{len(dubluri)} ID-uri duplicate (ex. {dubluri[:3]}).")
+    dubluri_l = [u for u, n in Counter(linkuri).items() if n > 1 and u]
+    if dubluri_l:
+        r.erori.append(f"{len(dubluri_l)} adrese duplicate.")
+    if fara_id:
+        r.erori.append(f"{fara_id} produse fără ID.")
+    if fara_link:
+        r.erori.append(f"{fara_link} produse fără adresă https.")
+    if fara_titlu:
+        r.erori.append(f"{fara_titlu} produse fără titlu.")
+    if preturi_gresite:
+        r.erori.append(f"{preturi_gresite} prețuri care nu sunt în formatul „N RON”.")
+    if fara_imagine:
+        r.avertizari.append(f"{fara_imagine} produse fără imagine (intră în feed cu image_link gol, ca la Mulwi).")
+    r.statistici = {"produse": r.numar_produse}
+    return r
+
+
+def valideaza_csv(text: str, cfg) -> Rezultat:
+    import csv
+    import io
+    r = Rezultat()
+    linii = list(csv.reader(io.StringIO(text.lstrip("﻿"))))
+    if not linii or linii[0] != ["Page URL", "Custom label"]:
+        r.erori.append("Antetul CSV nu e „Page URL,Custom label”.")
+        return r
+    randuri = linii[1:]
+    r.numar_produse = len(randuri)
+    if not randuri:
+        r.erori.append("Feedul e gol.")
+        return r
+    if any(len(rd) != 2 for rd in randuri):
+        r.erori.append("Există rânduri care nu au exact două coloane.")
+    urluri = [rd[0] for rd in randuri if rd]
+    if any(not u.startswith("https://") for u in urluri):
+        r.erori.append("Există adrese care nu încep cu https://.")
+    dubluri = [u for u, n in Counter(urluri).items() if n > 1]
+    if dubluri:
+        r.erori.append(f"{len(dubluri)} adrese duplicate.")
+    r.statistici = {"produse": r.numar_produse}
+    return r

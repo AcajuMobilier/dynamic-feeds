@@ -41,6 +41,9 @@ class Magazin:
     def __init__(self, cheie: str, date: dict):
         self.cheie = cheie
         self.nume = date.get("nume", cheie)
+        # adresa produselor, construită din handle (așa fac feedurile Mulwi,
+        # inclusiv pentru produsele nepublicate pe Online Store)
+        self.url_produse = date.get("url_produse") or f"https://{self.nume}/products/"
         self.variabila_store = date.get("variabila_store", "SHOPIFY_STORE")
         self.variabila_token = date.get("variabila_token", "SHOPIFY_TOKEN")
         liv = date.get("livrare") or {}

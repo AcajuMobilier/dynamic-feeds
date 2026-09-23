@@ -125,6 +125,16 @@ jobs:
           retention-days: 30
           if-no-files-found: warn
 
+      - name: Păstrează starea generării
+        # Un fișier mic, citit de jobul „verifica" după publicare.
+        if: always()
+        uses: actions/upload-artifact@v7.0.1
+        with:
+          name: stare
+          path: public/stare.json
+          retention-days: 7
+          if-no-files-found: error
+
       - name: Pregătește GitHub Pages
         uses: actions/configure-pages@v6.0.0
 
@@ -176,10 +186,7 @@ jobs:
       - name: Ia starea generării
         uses: actions/download-artifact@v7.0.0
         with:
-          name: github-pages
-          path: pagina
+          name: stare
+          path: stare
       - name: Verifică starea fiecărui feed
-        run: |
-          set -euo pipefail
-          tar -xf pagina/artifact.tar -C pagina stare.json
-          python scripts/verifica_stare.py pagina/stare.json
+        run: python scripts/verifica_stare.py stare/stare.json

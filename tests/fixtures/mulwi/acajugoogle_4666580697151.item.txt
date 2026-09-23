@@ -1,0 +1,42 @@
+    <item>
+    <g:id><![CDATA[4666580697151]]></g:id>    
+    <title><![CDATA[Scaun living Caro, crem/fag, piele ecologica/lemn de cauciuc, 42x58x96]]></title>
+    <link><![CDATA[https://acaju.ro/products/scaun-living-caro-crem-fag-piele-ecologica-lemn-de-cauciuc-42x58x96-cm]]></link>      
+    
+        <g:price>264 RON</g:price>
+        <g:sale_price>264 RON</g:sale_price>
+          
+    <description><![CDATA[Categorie. Scaune. Lungime. 42 cm. Adancime. 58 cm. Inaltime. 96 cm. Inaltime sezut. 45 cm. Greutate. 6 kg. Capacitate maxima greutate. 100. Material sezut. piele ecologica, PVC. Material picioare. lemn de cauciuc. Culoare sezut. crem. Culoare picioare. fag. Garantie. 24 luni. Recomandari. Detalii aici. SCAUN LIVING CARO, CREM/FAG, PIELE ECOLOGICA/LEMN DE CAUCIUC, 42X58X96X45 CM. Asamblare:. Produsul nu este montat.. Asamblarea este rapida si usoara, putand fi executata in doar 15-20 minute, pe ]]></description>
+    <g:product_type><![CDATA[Scaune]]></g:product_type>
+    <g:google_product_category><![CDATA[]]></g:google_product_category>
+    <g:image_link><![CDATA[https://cdn.shopify.com/s/files/1/0254/3691/3727/files/scaun-living-caro-crem-fag-piele-ecologica-lemn-de-cauciuc-42x58x96-cm-1_1ee13eb8-b6c8-4245-a558-3b8d27edd0aa.webp?v=1786112423]]></g:image_link>
+    <g:condition>new</g:condition> 
+      
+        <g:availability>in stock</g:availability>
+      
+    <brand><![CDATA[ACAJU-H]]></brand>
+    <g:mpn><![CDATA[V-CH-CARO-KR-KREMOWY]]></g:mpn>
+    <g:gtin><![CDATA[]]></g:gtin> 
+    <g:shipping_weight>6 kg</g:shipping_weight>
+    
+     
+        <g:custom_label_0>livrare rapida</g:custom_label_0>
+      
+        <g:custom_label_1><![CDATA[V-CH-CARO-KR-KREMOWY]]></g:custom_label_1>
+        <g:custom_label_2>
+            
+             TOP2AKJ 
+            
+        </g:custom_label_2>  
+    
+        <g:custom_label_3>ZILNICPRETBUN</g:custom_label_3>
+     
+  
+  
+        <g:custom_label_4></g:custom_label_4>
+     
+    
+        <g:shipping_label>paid</g:shipping_label>
+      
+    
+    </item>

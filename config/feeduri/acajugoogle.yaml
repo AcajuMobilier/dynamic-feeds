@@ -1,0 +1,21 @@
+# Google Shopping pentru acaju.ro. Înlocuiește feedul Mulwi „s1nz-google_shopping.xml".
+# REPLICĂ IDENTICĂ (vezi oceangoogle.yaml).
+magazin: acaju
+format: google
+fisier: "acajugoogle.xml"
+id: produs
+
+selectie:
+  # produsele care NU au niciunul dintre aceste taguri (potrivire fără majuscule)
+  fara_taguri: ["FARA ADD TO CART", "RESIGILATE", "NON ADDS"]
+  doar_publicate: false
+
+extra:
+  sablon: "acaju_google"
+  titlu_canal: "Google Shopping acaju.ro"
+  link_canal: "https://acaju.ro"
+  varianta: "id_minim"
+  omite_etichete_goale: true
+  # La produsele fără stoc Mulwi trimite „backorder" și această dată fixă,
+  # setată manual în Mulwi. O păstrăm identic; de actualizat când expiră.
+  data_disponibilitate: "2026-10-15T13:00-0800"

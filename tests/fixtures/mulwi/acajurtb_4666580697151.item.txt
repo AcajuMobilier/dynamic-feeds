@@ -1,0 +1,12 @@
+    <item>
+    <product_id><![CDATA[4666580697151]]></product_id> 
+    <product_name><![CDATA[Scaun living Caro, crem/fag, piele ecologica/lemn de cauciuc, 42x58x96]]></product_name>
+    <product_url><![CDATA[https://acaju.ro/products/scaun-living-caro-crem-fag-piele-ecologica-lemn-de-cauciuc-42x58x96-cm]]></product_url>
+    
+        <price>264 RON</price>
+        <sale_price>264 RON</sale_price>
+      
+    <category><![CDATA[Scaune]]></category>
+    <image_link><![CDATA[https://cdn.shopify.com/s/files/1/0254/3691/3727/files/scaun-living-caro-crem-fag-piele-ecologica-lemn-de-cauciuc-42x58x96-cm-1_1ee13eb8-b6c8-4245-a558-3b8d27edd0aa.webp?v=1786112423]]></image_link>  
+    <g:availability>in stock</g:availability>
+    </item>

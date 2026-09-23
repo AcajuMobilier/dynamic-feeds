@@ -40,6 +40,8 @@ query ProduseDupaTag($cursor: String, $q: String!) {
       totalInventory
       media(first: %d, sortKey: POSITION) {
         nodes {
+          mediaContentType
+          preview { image { url } }
           ... on MediaImage {
             image { url width height }
           }
@@ -56,6 +58,7 @@ query ProduseDupaTag($cursor: String, $q: String!) {
           compareAtPrice
           position
           inventoryQuantity
+          inventoryPolicy
           inventoryItem { measurement { weight { value unit } } }
         }
       }
@@ -232,9 +235,15 @@ def descarca_produse(client: ClientShopify, tag: str, la_pagina=None) -> list[di
 
 def _curata_produs(p: dict) -> dict:
     """Transformă răspunsul GraphQL într-un dicționar simplu, independent de API."""
-    imagini = []
+    imagini, media = [], []
     for nod in ((p.get("media") or {}).get("nodes") or []):
-        imagine = (nod or {}).get("image")
+        nod = nod or {}
+        # toate media, în ordinea pozițiilor, cu imaginea de previzualizare:
+        # la video și modele 3D e cadrul de previzualizare, la imagini e imaginea
+        prev = ((nod.get("preview") or {}).get("image") or {}).get("url")
+        if prev:
+            media.append({"url": prev, "tip": nod.get("mediaContentType") or ""})
+        imagine = nod.get("image")
         if not imagine or not imagine.get("url"):
             continue          # media încă neprocesată (status != READY) sau video/3D
         imagini.append({
@@ -254,6 +263,8 @@ def _curata_produs(p: dict) -> dict:
             "pret_comparat": v.get("compareAtPrice"),
             "pozitie": v.get("position"),
             "stoc": v.get("inventoryQuantity"),
+            # CONTINUE = se vinde și fără stoc; DENY = nu se poate comanda la stoc 0
+            "politica_stoc": v.get("inventoryPolicy") or "",
             "greutate_kg": _greutate_kg(v),
         })
 
@@ -269,6 +280,7 @@ def _curata_produs(p: dict) -> dict:
         "url": p.get("onlineStoreUrl"),
         "stoc_total": p.get("totalInventory"),
         "imagini": imagini,
+        "media": media,
         "variante": variante,
         "variante_incomplete": bool(((p.get("variants") or {}).get("pageInfo") or {}).get("hasNextPage")),
     }

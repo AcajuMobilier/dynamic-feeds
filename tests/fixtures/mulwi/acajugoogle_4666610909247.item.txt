@@ -1,0 +1,43 @@
+    <item>
+    <g:id><![CDATA[4666610909247]]></g:id>    
+    <title><![CDATA[Masa extensibila SANDOR, stejar, 160/220x90x77 cm]]></title>
+    <link><![CDATA[https://acaju.ro/products/masa-extensibila-sandor-stejar-160-220x90x77-cm]]></link>      
+    
+        <g:price>2281 RON</g:price>
+        <g:sale_price>2281 RON</g:sale_price>
+          
+    <description><![CDATA[Categorie. Mese. Greutate. 87. Extensibila. da. Material blat. MDF. Material cadru. MDF, otel. Culoare blat. stejar. Culoare cadru. stejar. Lungime. 160-220 cm. Adancime. 90 cm. Inaltime. 77 cm. Forma. dreptunghiulara. Garantie. 24 luni. Recomandari. Detalii aici. MASA EXTENSIBILA SANDOR, STEJAR, 160/220X90X77 CM. Detalii tehnice:. Greutatea maxima admisa: 30 kg. Asamblare:. Produsul nu este montat.. Asamblarea este rapida si usoara, putand fi executata pe baza instructiunilor de montaj din cole]]></description>
+    <g:product_type><![CDATA[Masa]]></g:product_type>
+    <g:google_product_category><![CDATA[]]></g:google_product_category>
+    <g:image_link><![CDATA[https://cdn.shopify.com/s/files/1/0254/3691/3727/files/masa-extensibila-sandor-stejar-160-220x90x77-cm-1_4dda7aee-4b0c-4a21-895b-68b284efa389.webp?v=1786112503]]></g:image_link>
+    <g:condition>new</g:condition> 
+      
+        <g:availability>backorder</g:availability>
+        <g:availability_date>2026-10-15T13:00-0800</g:availability_date> 
+      
+    <brand><![CDATA[ACAJU-H]]></brand>
+    <g:mpn><![CDATA[V-CH-SANDOR-ST-SONOMA]]></g:mpn>
+    <g:gtin><![CDATA[]]></g:gtin> 
+    <g:shipping_weight>87 kg</g:shipping_weight>
+    
+     
+        <g:custom_label_0>La Comanda</g:custom_label_0>
+      
+        <g:custom_label_1><![CDATA[V-CH-SANDOR-ST-SONOMA]]></g:custom_label_1>
+        <g:custom_label_2>
+            
+             TOP2AKJ 
+            
+        </g:custom_label_2>  
+    
+        <g:custom_label_3>ZILNICPRETBUN</g:custom_label_3>
+     
+  
+  
+        <g:custom_label_4></g:custom_label_4>
+     
+    
+        <g:shipping_label>paid</g:shipping_label>
+      
+    
+    </item>

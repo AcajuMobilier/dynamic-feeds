@@ -1,0 +1,17 @@
+# Facebook Dynamic Ads pentru ocean.ro. Înlocuiește feedul Mulwi „custom.xml".
+# REPLICĂ IDENTICĂ (vezi oceangoogle.yaml). Tot catalogul activ, fără filtru.
+magazin: ocean
+format: google
+fisier: "oceanfb.xml"
+id: produs
+
+selectie:
+  doar_publicate: false
+
+extra:
+  sablon: "ocean_fb"
+  # da, Mulwi pune același titlu de canal și în feedul de Facebook
+  titlu_canal: "Google Shopping ocean.ro"
+  link_canal: "https://ocean.ro"
+  varianta: "id_minim"
+  omite_etichete_goale: true

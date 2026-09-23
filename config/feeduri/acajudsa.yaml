@@ -1,0 +1,9 @@
+# CSV pentru Google Ads DSA pe acaju.ro. Înlocuiește feedul Mulwi „custom_csv.csv".
+# REPLICĂ IDENTICĂ. Tot catalogul activ; două coloane: adresa paginii și tipul de produs.
+magazin: acaju
+format: dsa
+fisier: "acajudsa.csv"
+id: produs
+
+selectie:
+  doar_publicate: false

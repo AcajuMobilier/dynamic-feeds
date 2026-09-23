@@ -1,0 +1,22 @@
+# Google Shopping pentru ocean.ro. Înlocuiește feedul Mulwi „shopping.xml".
+# REPLICĂ IDENTICĂ: campaniile din Merchant Center / Google Ads sunt configurate
+# de colaboratori externi pe acest feed; nu se schimbă nimic fără ei.
+magazin: ocean
+format: google
+fisier: "oceangoogle.xml"
+
+# ID de PRODUS, un item per produs, ca în feedul Mulwi.
+id: produs
+
+selectie:
+  tag: "oceanppc"
+  doar_publicate: false      # Mulwi include și produsele nepublicate pe Online Store
+
+extra:
+  sablon: "ocean_google"
+  titlu_canal: "Google Shopping ocean.ro"
+  link_canal: "https://ocean.ro"
+  # varianta care dă prețul/SKU-ul/greutatea: cea cu ID-ul cel mai mic (regula Mulwi)
+  varianta: "id_minim"
+  # singura diferență agreată față de Mulwi: etichetele goale sau doar cu spații se omit
+  omite_etichete_goale: true

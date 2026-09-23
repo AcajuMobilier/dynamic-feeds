@@ -6,6 +6,9 @@
 
 ocean:
   nume: "ocean.ro"
+  # Adresa produselor, construită din handle: așa fac feedurile Mulwi,
+  # inclusiv pentru produsele nepublicate pe Online Store.
+  url_produse: "https://www.ocean.ro/products/"
   variabila_store: "SHOPIFY_STORE"
   variabila_token: "SHOPIFY_TOKEN"
   livrare:
@@ -37,6 +40,7 @@ ocean:
 
 acaju:
   nume: "acaju.ro"
+  url_produse: "https://acaju.ro/products/"
   variabila_store: "SHOPIFY_STORE_ACAJU"
   variabila_token: "SHOPIFY_TOKEN_ACAJU"
   # Aceeași grilă GLS ca la ocean (verificat de client, 2026-09). Pe acaju

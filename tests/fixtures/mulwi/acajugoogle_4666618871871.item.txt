@@ -1,0 +1,42 @@
+    <item>
+    <g:id><![CDATA[4666618871871]]></g:id>    
+    <title><![CDATA[Oglinda KENT, castan, 155x11x88 cm]]></title>
+    <link><![CDATA[https://acaju.ro/products/oglinda-kent-castan-155x11x88-cm]]></link>      
+    
+        <g:price>540 RON</g:price>
+        <g:sale_price>486 RON</g:sale_price>  
+          
+    <description><![CDATA[Categorie. Oglinda de perete. Greutate. 24 kg. Lungime. 155 cm. Adancime. 11 cm. Inaltime. 88 cm. Materiale. PAL, folie finisare, benzi MDF. Culoare. castan. Garantie. 24 luni. Recomandari. Detalii aici. OGLINDA KENT, CASTAN, 155X11X88 CM. Asamblare:. Produsul nu este montat.. Asamblarea este rapida si usoara, putand fi executata pe baza instructiunilor de montaj din colet.. Utilizarea produsului:. A se evita utilizarea produselor chimice, cu exceptia celor special concepute pentru ingrijirea og]]></description>
+    <g:product_type><![CDATA[Oglinda perete]]></g:product_type>
+    <g:google_product_category><![CDATA[]]></g:google_product_category>
+    <g:image_link><![CDATA[https://cdn.shopify.com/s/files/1/0254/3691/3727/files/oglinda-kent-castan-155x11x88-cm-1.webp?v=1786112794]]></g:image_link>
+    <g:condition>new</g:condition> 
+      
+        <g:availability>in stock</g:availability>
+      
+    <brand><![CDATA[ACAJU-BR]]></brand>
+    <g:mpn><![CDATA[S10-ELUS155-KA]]></g:mpn>
+    <g:gtin><![CDATA[]]></g:gtin> 
+    <g:shipping_weight>24 kg</g:shipping_weight>
+    
+     
+        <g:custom_label_0>livrare rapida</g:custom_label_0>
+      
+        <g:custom_label_1><![CDATA[S10-ELUS155-KA]]></g:custom_label_1>
+        <g:custom_label_2>
+            
+             TOP2AKJ 
+            
+        </g:custom_label_2>  
+    
+        <g:custom_label_3></g:custom_label_3>
+     
+  
+  
+        <g:custom_label_4>PROMO7</g:custom_label_4>
+     
+    
+        <g:shipping_label>paid</g:shipping_label>
+      
+    
+    </item>

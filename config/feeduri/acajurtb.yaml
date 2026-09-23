@@ -1,0 +1,15 @@
+# RTB House pentru acaju.ro. Înlocuiește feedul Mulwi „rtb_house.xml".
+# REPLICĂ IDENTICĂ. Tot catalogul activ, fără filtru; disponibilitate „in stock"
+# la toate produsele, cum trimite Mulwi.
+magazin: acaju
+format: rtb
+fisier: "acajurtb.xml"
+id: produs
+
+selectie:
+  doar_publicate: false
+
+extra:
+  titlu_canal: "RTB acaju.ro"
+  link_canal: "https://acaju.ro"
+  varianta: "id_minim"

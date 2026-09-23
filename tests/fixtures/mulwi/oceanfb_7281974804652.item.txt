@@ -1,0 +1,34 @@
+    <item>
+    <g:id><![CDATA[7281974804652]]></g:id> 
+    <title><![CDATA[Masuta multifunctionala LEVKE LIGHT sonoma, 76x76x44 cm]]></title>
+    <link><![CDATA[https://www.ocean.ro/products/masuta-multifunctionala-levke-light-sonoma-76x76x44-cm]]></link>
+    
+        <g:price>361 RON</g:price>
+        <g:sale_price>361 RON</g:sale_price>
+      
+    <description><![CDATA[Categorie. Masute. Greutate. 20 kg. Material blat. PAL. Material cadru. PAL, plastic. Culoare blat. stejar sonoma. Culoare cadru. stejar sonoma. Lungime. 76 cm. Adancime. 76 cm. Inaltime. 44 cm. Forma. patrata. Greutate maxima suportata. N/A kg. Garantie. 24 luni. MASUTA LEVKE LIGHT, STEJAR SONOMA, PAL, 76X76X44 CM. Asamblare:. Produsul nu este montat.. Asamblarea este rapida si usoara, putand fi executata in doar 10-15 minute, pe baza instructiunilor de montaj din colet.. Utilizarea produsului:]]></description>
+    <g:product_type><![CDATA[Masuta]]></g:product_type>
+    <g:google_product_category><![CDATA[]]></g:google_product_category>
+    <g:image_link><![CDATA[https://cdn.shopify.com/s/files/1/0604/5823/8124/products/A8_LevkelightCToD_83-059-66.jpg?v=1737966618]]></g:image_link> 
+    <g:additional_image_link><![CDATA[[https://cdn.shopify.com/s/files/1/0604/5823/8124/products/A8_LevkelightCToD_83-059-66.jpg?v=1737966618 https://cdn.shopify.com/s/files/1/0604/5823/8124/products/A8_LevkelightCT_83-059-66.jpg?v=1737966618 https://cdn.shopify.com/s/files/1/0604/5823/8124/products/A8_LevkelightCTDetail_83-059-66.jpg?v=1652433245]]]></g:additional_image_link> 
+    <g:condition>new</g:condition>
+    <g:availability>in stock</g:availability>
+    <brand><![CDATA[OCEAN - B]]></brand> 
+    <g:mpn><![CDATA[83059664]]></g:mpn>
+     
+    <g:custom_label_1>
+         
+    </g:custom_label_1>
+    
+    <g:custom_label_2> 
+        
+    </g:custom_label_2>
+    
+    
+        <g:custom_label_3></g:custom_label_3>
+    
+    <g:custom_label_4> 
+            
+             
+        </g:custom_label_4>
+    </item>
