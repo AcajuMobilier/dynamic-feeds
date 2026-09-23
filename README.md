@@ -5,10 +5,10 @@ Generează automat feedul XML pentru **Favi.ro** din produsele magazinului Shopi
 **Adresa feedului, cea pe care o dai la Favi:**
 
 ```
-https://birzugeorge24-boop.github.io/dynamic-feeds/oceanfavi.xml
+https://acajumobilier.github.io/dynamic-feeds/oceanfavi.xml
 ```
 
-La [adresa de bază](https://birzugeorge24-boop.github.io/dynamic-feeds/) e o pagină care arată câte produse are feedul și când a fost generat ultima dată.
+La [adresa de bază](https://acajumobilier.github.io/dynamic-feeds/) e o pagină care arată câte produse are feedul și când a fost generat ultima dată.
 
 Raportul cu produsele problematice **nu se publică**, pentru că include produse nepublicate sau arhivate. Îl descarci din pagina rulării, vezi mai jos.
 

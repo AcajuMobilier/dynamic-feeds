@@ -67,7 +67,7 @@ jobs:
           SHOPIFY_TOKEN: ${{ secrets.SHOPIFY_TOKEN }}
           SHOPIFY_CLIENT_ID: ${{ secrets.SHOPIFY_CLIENT_ID }}
           SHOPIFY_CLIENT_SECRET: ${{ secrets.SHOPIFY_CLIENT_SECRET }}
-          FEED_LIVE_URL: "https://birzugeorge24-boop.github.io/dynamic-feeds/oceanfavi.xml"
+          FEED_LIVE_URL: "https://acajumobilier.github.io/dynamic-feeds/oceanfavi.xml"
           # Opțiunile din butonul de rulare manuală ajung aici ca variabile de
           # mediu, nu direct în comandă: altfel textul scris de om ar fi
           # executat de shell.
