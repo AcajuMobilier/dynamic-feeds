@@ -195,28 +195,39 @@ def _greutate_kg(varianta: dict):
     return valoare * factori.get(unitate, 1.0)
 
 
-def descarca_produse(client: ClientShopify, tag: str, la_pagina=None) -> list[dict]:
-    """Toate produsele cu tagul dat, paginat. Potrivirea pe tag se face exact,
-    pentru că filtrul Shopify caută tokenizat (tag:camera ar prinde camera-cable)."""
+def descarca_catalog(client: ClientShopify, interogare: str = "status:active",
+                     la_pagina=None) -> list[dict]:
+    """Tot catalogul care răspunde la interogarea Shopify, paginat.
+
+    Implicit produsele active. O singură extragere per magazin alimentează
+    toate feedurile lui; selecția pe taguri se face după, în src/selectie.py.
+    """
     produse, cursor, pagina = [], None, 0
-    total_brut = 0
     while True:
         pagina += 1
-        raspuns = client.interogheaza(QUERY_PRODUSE, {"cursor": cursor, "q": f"tag:{tag}"})
+        raspuns = client.interogheaza(QUERY_PRODUSE, {"cursor": cursor, "q": interogare})
         bloc = raspuns["data"]["products"]
         noduri = bloc["nodes"]
-        total_brut += len(noduri)
-        for p in noduri:
-            taguri = p.get("tags") or []
-            if tag.lower() not in {t.strip().lower() for t in taguri}:
-                continue
-            produse.append(_curata_produs(p))
+        produse.extend(_curata_produs(p) for p in noduri)
         if la_pagina:
-            la_pagina(pagina, len(noduri), total_brut)
+            la_pagina(pagina, len(noduri), len(produse))
         if not bloc["pageInfo"]["hasNextPage"]:
             break
         cursor = bloc["pageInfo"]["endCursor"]
     return produse
+
+
+def descarca_produse(client: ClientShopify, tag: str, la_pagina=None) -> list[dict]:
+    """Doar produsele cu tagul dat (orice status). Păstrat pentru scripturile
+    de test; generatorul folosește descarca_catalog + selecție.
+
+    Filtrul Shopify caută tokenizat (tag:camera ar prinde camera-cable), de
+    aceea potrivirea exactă se face aici.
+    """
+    produse = descarca_catalog(client, f"tag:{tag}", la_pagina)
+    tag = tag.lower()
+    return [p for p in produse
+            if tag in {str(t).strip().lower() for t in (p.get("taguri") or [])}]
 
 
 def _curata_produs(p: dict) -> dict:

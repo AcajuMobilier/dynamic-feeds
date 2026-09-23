@@ -146,7 +146,8 @@ def _variante_valide(pid: str, p: dict, cfg, raport) -> list[dict]:
 
 
 def construieste_itemuri(pregatite: dict, cfg, raport) -> list[str]:
-    """Un SHOPITEM per variantă, în ordinea elementelor cerută de Favi."""
+    """Un SHOPITEM per variantă (sau per produs, după politica de ID a
+    feedului), în ordinea elementelor cerută de Favi."""
     itemuri = []
     for pid, p in pregatite.items():
         if not p["variante"]:
@@ -163,25 +164,33 @@ def construieste_itemuri(pregatite: dict, cfg, raport) -> list[str]:
             raport.adauga("exclus_stoc_zero", pid, p["titlu"], f"stoc={p['stoc']}")
             continue
 
-        # ITEMGROUP_ID se pune doar când chiar rămân mai multe variante în feed.
-        multi = len(variante) > 1
+        if cfg.politica_id == "produs":
+            # Un item per produs, cu ID-ul produsului. Prețul, stocul și
+            # greutatea vin de la prima variantă după poziție, cum face și
+            # feedul pe care îl înlocuim; fără ITEMGROUP_ID, fără ?variant=.
+            variante = [min(variante, key=lambda x: (x.get("pozitie") or 0, x["id"]))]
+            multi = False
+        else:
+            # ITEMGROUP_ID se pune doar când chiar rămân mai multe variante în feed.
+            multi = len(variante) > 1
 
         for v in variante:
+            id_item = pid if cfg.politica_id == "produs" else v["id"]
             titlu = p["titlu"] + (sufix_varianta(v["sku"], v.get("titlu")) if multi else "")
             url = str(p["url"]) + (f"?variant={v['id']}" if multi else "")
 
             parametri = completeaza_dimensiuni_din_titlu(list(p["parametri"]), p["titlu"], p["categorie"])
             parametri = ajusteaza_pentru_favi(parametri, p["categorie"], cfg)
             if not any(k in CHEI_DIMENSIUNE for k, _ in parametri):
-                raport.adauga("fara_dimensiuni", v["id"], p["titlu"],
+                raport.adauga("fara_dimensiuni", id_item, p["titlu"],
                               "nicio dimensiune în tabel sau titlu — de completat în Shopify",
-                              tip_id="variantă")
+                              tip_id="variantă" if multi else "produs")
             greutate = v.get("greutate_kg")
             if not any(k == "Greutate" for k, _ in parametri) and greutate and greutate > 0:
                 parametri.append(
                     ("Greutate", (str(int(greutate)) if greutate == int(greutate) else f"{greutate:g}") + " kg"))
 
-            rows = [f"    <ITEM_ID>{esc(v['id'])}</ITEM_ID>"]
+            rows = [f"    <ITEM_ID>{esc(id_item)}</ITEM_ID>"]
             if multi:
                 rows.append(f"    <ITEMGROUP_ID>{esc(pid)}</ITEMGROUP_ID>")
             rows.append(f"    <PRODUCTNAME>{esc(titlu)}</PRODUCTNAME>")
@@ -199,9 +208,9 @@ def construieste_itemuri(pregatite: dict, cfg, raport) -> list[str]:
                 rows.append(f"      <DELIVERY_PRICE>{format_pret(cfg.pret_livrare_pentru(float(greutate)))}</DELIVERY_PRICE>")
                 rows.append("    </DELIVERY>")
             elif cfg.curier:
-                raport.adauga("fara_pret_livrare", v["id"], p["titlu"],
+                raport.adauga("fara_pret_livrare", id_item, p["titlu"],
                               "varianta nu are greutate în Shopify — nu pot calcula prețul de livrare",
-                              tip_id="variantă")
+                              tip_id="variantă" if multi else "produs")
             producator = _producator(p["vendor"], cfg)
             if producator:
                 rows.append(f"    <MANUFACTURER>{esc(producator)}</MANUFACTURER>")
@@ -219,3 +228,19 @@ def construieste_itemuri(pregatite: dict, cfg, raport) -> list[str]:
 
 def construieste_xml(itemuri: list[str]) -> str:
     return '<?xml version="1.0" encoding="utf-8"?>\n<SHOP>\n' + "\n".join(itemuri) + "\n</SHOP>\n"
+
+
+def genereaza(produse: list[dict], cfg, raport) -> str:
+    """Punctul de intrare comun al formatelor: produse selectate -> text feed."""
+    pregatite = pregateste_produse(produse, cfg, raport)
+    return construieste_xml(construieste_itemuri(pregatite, cfg, raport))
+
+
+def numara(text: str) -> int:
+    """Câte produse are un feed în acest format (pentru frâna de siguranță)."""
+    return text.count("<SHOPITEM>")
+
+
+def valideaza(text: str, cfg):
+    from . import validare
+    return validare.valideaza(text, cfg)

@@ -9,6 +9,7 @@ Rulare:  python scripts/scrie_index.py public
 from __future__ import annotations
 
 import html
+import json
 import os
 import re
 import sys
@@ -48,7 +49,7 @@ SABLON = """<!DOCTYPE html>
 <h1>Feeduri pentru marketplace-uri</h1>
 <p class="sub">Generate automat din Shopify. Actualizare la fiecare 2 ore.</p>
 <table>
-<thead><tr><th>Fișier</th><th class="nr">Produse</th><th class="nr">Mărime</th></tr></thead>
+<thead><tr><th>Fișier</th><th>Magazin</th><th>Ultima rulare</th><th class="nr">Produse</th><th class="nr">Mărime</th></tr></thead>
 <tbody>
 {randuri}
 </tbody>
@@ -73,14 +74,23 @@ def main() -> int:
         print(f"EROARE: folderul {folder} nu există.")
         return 1
 
+    # starea scrisă de genereaza.py: ce feed a fost regenerat și ce a rămas vechi
+    stare = {}
+    try:
+        for f in json.loads((folder / "stare.json").read_text(encoding="utf-8")).get("feeduri", []):
+            stare[f.get("fisier")] = f
+    except (OSError, ValueError):
+        pass
+
     randuri = []
     for fisier in sorted(folder.iterdir()):
-        if fisier.name == "index.html" or not fisier.is_file():
+        if fisier.name in ("index.html", "stare.json") or not fisier.is_file():
             continue
         produse = ""
         if fisier.suffix == ".xml":
             try:
-                produse = str(len(re.findall(r"<SHOPITEM>", fisier.read_text(encoding="utf-8"))))
+                text = fisier.read_text(encoding="utf-8")
+                produse = str(len(re.findall(r"<SHOPITEM>|<item>", text)))
             except OSError:
                 produse = "?"
         elif fisier.suffix == ".csv":
@@ -89,9 +99,20 @@ def main() -> int:
                     produse = str(max(0, sum(1 for _ in f) - 1))
             except OSError:
                 produse = "?"
+        st = stare.get(fisier.name) or {}
+        magazin = st.get("magazin", "")
+        if not st:
+            ultima = ""
+        elif st.get("ok"):
+            ultima = "regenerat"
+        elif st.get("pastrat_live"):
+            ultima = "a picat, păstrat cel vechi"
+        else:
+            ultima = "a picat"
         nume = html.escape(fisier.name)
         randuri.append(
             f'<tr><td><a href="{nume}">{nume}</a></td>'
+            f'<td>{html.escape(magazin)}</td><td>{html.escape(ultima)}</td>'
             f'<td class="nr">{produse}</td>'
             f'<td class="nr">{marime_lizibila(fisier.stat().st_size)}</td></tr>'
         )
@@ -105,7 +126,7 @@ def main() -> int:
 
     (folder / "index.html").write_text(
         SABLON.format(
-            randuri="\n".join(randuri) or '<tr><td colspan="3">Niciun fișier.</td></tr>',
+            randuri="\n".join(randuri) or '<tr><td colspan="5">Niciun fișier.</td></tr>',
             moment=datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M"),
             rulare=rulare,
         ),

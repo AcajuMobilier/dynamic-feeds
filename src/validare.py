@@ -145,43 +145,86 @@ def valideaza(xml_text: str, cfg) -> Rezultat:
 #   ("numar", n)    – feedul există și are n produse
 #   ("lipseste", 0) – feedul nu există încă (prima rulare); frâna se sare
 #   ("eroare", 0)   – nu am putut verifica; frâna NU se sare
-def citeste_feed_live(url: str, timeout: int = 120, incercari: int = 3):
-    """Citește feedul publicat și numără produsele.
-
-    Distincția dintre „nu există încă" și „nu am putut verifica" e esențială:
-    dacă tratăm o eroare de rețea ca pe o primă rulare, frâna se dezactivează
-    exact în situațiile în care ar trebui să apere feedul.
-    """
-    import time
-    import urllib.error
+def _cerere(url: str):
     import urllib.request
-
-    cerere = urllib.request.Request(url, headers={
-        "User-Agent": "feed-favi/1.0 (verificare frana de siguranta)",
+    return urllib.request.Request(url, headers={
+        "User-Agent": "dynamic-feeds/1.0 (verificare frana de siguranta)",
         "Cache-Control": "no-cache",
         "Pragma": "no-cache",
     })
+
+
+def _numara_implicit(text: str) -> int:
+    return text.count("<SHOPITEM>")
+
+
+def descarca_feed_live(url: str, timeout: int = 120, incercari: int = 3, numara=None):
+    """Textul feedului publicat, sau None dacă nu poate fi luat întreg.
+
+    Folosit ca să păstrăm versiunea live a unui feed care a picat la
+    regenerare, ca adresa lui să nu rămână goală pe Pages.
+    """
+    stare, _, _, text = _citeste(url, timeout, incercari, numara or _numara_implicit)
+    return text if stare == "numar" else None
+
+
+def exista_feed_live(url: str, timeout: int = 60) -> bool:
+    """True dacă la adresă răspunde ceva (orice cod în afară de 404)."""
+    import urllib.error
+    import urllib.request
+    try:
+        with urllib.request.urlopen(_cerere(url), timeout=timeout) as r:
+            return r.status == 200
+    except urllib.error.HTTPError as e:
+        return e.code != 404
+    except Exception:
+        return True      # nu știm; presupunem că există, ca să nu publicăm un folder incomplet
+
+
+def _citeste(url, timeout, incercari, numara):
+    import time
+    import urllib.error
+    import urllib.request
     ultima = ""
     for i in range(incercari):
         try:
-            with urllib.request.urlopen(cerere, timeout=timeout) as r:
+            with urllib.request.urlopen(_cerere(url), timeout=timeout) as r:
                 date = r.read().decode("utf-8", errors="replace")
-            if "<SHOP" not in date:
-                # Pages poate răspunde cu o pagină de eroare HTML, cu cod 200.
-                ultima = "răspunsul nu e un feed XML"
-            elif "</SHOP>" not in date:
-                ultima = "feedul live pare trunchiat (nu are eticheta de final)"
+            n = numara(date)
+            if n <= 0 and "<" not in date[:200] and "," not in date[:200]:
+                ultima = "răspunsul nu pare a fi un feed"
+            elif not _pare_intreg(date):
+                ultima = "feedul live pare trunchiat"
             else:
-                return "numar", date.count("<SHOPITEM>"), ""
+                return "numar", n, "", date
         except urllib.error.HTTPError as e:
             if e.code == 404:
-                return "lipseste", 0, "feedul nu există încă la această adresă"
+                return "lipseste", 0, "feedul nu există încă la această adresă", None
             ultima = f"HTTP {e.code}"
         except Exception as e:                      # rețea, DNS, TLS, timeout
             ultima = str(e)
         if i < incercari - 1:
             time.sleep(3 * (i + 1))
-    return "eroare", 0, ultima
+    return "eroare", 0, ultima, None
+
+
+def _pare_intreg(text: str) -> bool:
+    """Un XML se termină cu eticheta rădăcinii închise; un CSV cu linie nouă."""
+    coada = text.rstrip()[-40:]
+    if text.lstrip().startswith("<"):
+        return coada.endswith("</SHOP>") or coada.endswith("</rss>") or coada.endswith("</feed>")
+    return True
+
+
+def citeste_feed_live(url: str, timeout: int = 120, incercari: int = 3, numara=None):
+    """Citește feedul publicat și numără produsele; întoarce (stare, număr, detaliu).
+
+    Distincția dintre „nu există încă" și „nu am putut verifica" e esențială:
+    dacă tratăm o eroare de rețea ca pe o primă rulare, frâna se dezactivează
+    exact în situațiile în care ar trebui să apere feedul.
+    """
+    stare, n, detaliu, _ = _citeste(url, timeout, incercari, numara or _numara_implicit)
+    return stare, n, detaliu
 
 
 def verifica_frana(numar_nou: int, live, prag_procent: float):

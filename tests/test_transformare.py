@@ -28,7 +28,7 @@ from src.raport import Raport                                     # noqa: E402
 
 @pytest.fixture(scope="module")
 def cfg():
-    return Configurare("ocean")
+    return Configurare("oceanfavi")
 
 
 # ------------------------------------------------------------------ titluri
@@ -521,3 +521,75 @@ def test_blocul_style_nu_ajunge_text_in_descriere(cfg):
     assert "td {" not in descriere and "border" not in descriere
     assert "alert" not in descriere
     assert descriere == "<p>Nota</p>\n<p><strong>Atenție</strong></p>\n<p>x</p>"
+
+
+def test_emailul_rupt_intre_taguri_este_scos(cfg):
+    """Un email scris ca <a>suport@acaju</a>.ro sau cu un <span> la mijloc
+    rămâne în două noduri de text după desfacerea tagurilor; trebuie unit
+    înainte de filtrare, altfel ajunge în feed și Favi respinge produsul."""
+    for brut in ['<p>scrie la <a href="mailto:suport@acaju.ro">suport@acaju</a>.ro acum</p>',
+                 '<p>scrie la suport@<span>acaju</span>.ro acum</p>',
+                 '<p>vezi <span>www.</span>acaju.ro/x acum</p>']:
+        descriere, _ = construieste_descriere(brut, cfg)
+        assert "@" not in descriere and "acaju.ro" not in descriere, descriere
+
+
+# ------------------------------------------------------------------ selecție și politica de ID
+from src import selectie                                          # noqa: E402
+
+
+def _cfg_cu(**override):
+    c = Configurare("oceanfavi")
+    for k, v in override.items():
+        setattr(c, k, v)
+    return c
+
+
+def test_selectia_dupa_tag_este_exacta_si_fara_majuscule():
+    produse = [produs_de_test(id="1", taguri=["oceanfavi"]),
+               produs_de_test(id="2", taguri=["OCEANFAVI-VECHI"]),
+               produs_de_test(id="3", taguri=["Altceva"])]
+    sel, contor = selectie.selecteaza(produse, _cfg_cu(tag="OCEANFAVI", fara_taguri=set(), doar_publicate=False))
+    assert [p["id"] for p in sel] == ["1"]
+    assert contor["fara_tag"] == 2
+
+
+def test_selectia_exclude_oricare_dintre_tagurile_interzise():
+    produse = [produs_de_test(id="1", taguri=["x"]),
+               produs_de_test(id="2", taguri=["x", "resigilate"]),
+               produs_de_test(id="3", taguri=["NON ADDS"])]
+    sel, contor = selectie.selecteaza(produse, _cfg_cu(tag="", fara_taguri={"resigilate", "non adds"}, doar_publicate=False))
+    assert [p["id"] for p in sel] == ["1"]
+    assert contor["cu_tag_exclus"] == 2
+
+
+def test_selectia_doar_publicate_scoate_produsele_fara_url():
+    produse = [produs_de_test(id="1"), produs_de_test(id="2", url=None)]
+    sel, contor = selectie.selecteaza(produse, _cfg_cu(tag="", fara_taguri=set(), doar_publicate=True))
+    assert [p["id"] for p in sel] == ["1"] and contor["nepublicate"] == 1
+
+
+def test_politica_id_produs_da_un_item_per_produs_cu_prima_varianta():
+    """Feedurile care înlocuiesc Mulwi folosesc ID-ul produsului și prima
+    variantă după poziție; fără ITEMGROUP_ID și fără ?variant= în adresă."""
+    p = produs_de_test(variante=[
+        dict(id="222", titlu="a doua", sku="B", barcode="", pret="200", pret_comparat=None,
+             pozitie=2, stoc=1, greutate_kg=2.0),
+        dict(id="111", titlu="prima", sku="A", barcode="", pret="100", pret_comparat=None,
+             pozitie=1, stoc=1, greutate_kg=1.0),
+    ])
+    cfg = _cfg_cu(politica_id="produs")
+    xml, _ = feed_din([p], cfg)
+    assert xml.count("<SHOPITEM>") == 1
+    assert "<ITEM_ID>7282346098860</ITEM_ID>" in xml       # id-ul produsului
+    assert "<PRICE_VAT>100</PRICE_VAT>" in xml               # prima variantă după poziție
+    assert "<ITEMGROUP_ID>" not in xml and "?variant=" not in xml
+    assert validare.valideaza(xml, cfg).valid
+
+
+def test_configurarea_acajufavi_se_incarca_cu_politica_produs():
+    cfg = Configurare("acajufavi")
+    assert cfg.politica_id == "produs" and cfg.tag == "FAVI" and cfg.fisier == "acajufavi.xml"
+    assert cfg.magazin.variabila_token == "SHOPIFY_TOKEN_ACAJU"
+    assert cfg.preturi_kg == Configurare("oceanfavi").preturi_kg     # aceeași grilă GLS
+    assert cfg.url_live.endswith("/acajufavi.xml")

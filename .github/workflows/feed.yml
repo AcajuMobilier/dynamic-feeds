@@ -1,4 +1,4 @@
-name: Feed Favi ocean.ro
+name: Feeduri marketplace
 
 on:
   # La fiecare 2 ore. Minutul 20, nu 0: fix la ora fixă GitHub e cel mai aglomerat
@@ -8,12 +8,16 @@ on:
   # Butonul „Run workflow" din tabul Actions.
   workflow_dispatch:
     inputs:
+      feeduri:
+        description: "Ce feeduri (nume separate prin virgulă, ex. oceanfavi,acajufavi). Gol = toate"
+        type: string
+        default: ""
       fara_frana:
-        description: "Publică chiar dacă frâna de siguranță ar opri rularea"
+        description: "Publică chiar dacă frâna de siguranță ar opri un feed"
         type: boolean
         default: false
       limita:
-        description: "Oprește după N produse (doar pentru testarea frânei; 0 = fără limită)"
+        description: "Oprește după N produse per magazin (doar pentru testarea frânei; 0 = fără limită)"
         type: string
         default: "0"
   # La orice modificare de cod sau configurare pe ramura principală.
@@ -39,9 +43,9 @@ concurrency:
 
 jobs:
   genereaza:
-    name: Generează și validează feedul
+    name: Generează și validează feedurile
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 40
     permissions:
       contents: read
     steps:
@@ -61,16 +65,18 @@ jobs:
       - name: Rulează testele
         run: python -m pytest tests -q
 
-      - name: Generează feedul
+      - name: Generează feedurile
         env:
+          # Un magazin = o pereche de secrete. Numele variabilelor sunt în
+          # config/magazine.yaml; aici doar se transmit din Secrets.
           SHOPIFY_STORE: ${{ secrets.SHOPIFY_STORE }}
           SHOPIFY_TOKEN: ${{ secrets.SHOPIFY_TOKEN }}
-          SHOPIFY_CLIENT_ID: ${{ secrets.SHOPIFY_CLIENT_ID }}
-          SHOPIFY_CLIENT_SECRET: ${{ secrets.SHOPIFY_CLIENT_SECRET }}
-          FEED_LIVE_URL: "https://acajumobilier.github.io/dynamic-feeds/oceanfavi.xml"
+          SHOPIFY_STORE_ACAJU: ${{ secrets.SHOPIFY_STORE_ACAJU }}
+          SHOPIFY_TOKEN_ACAJU: ${{ secrets.SHOPIFY_TOKEN_ACAJU }}
           # Opțiunile din butonul de rulare manuală ajung aici ca variabile de
           # mediu, nu direct în comandă: altfel textul scris de om ar fi
           # executat de shell.
+          FEEDURI: ${{ inputs.feeduri }}
           FARA_FRANA: ${{ inputs.fara_frana }}
           LIMITA: ${{ inputs.limita }}
         run: |
@@ -85,24 +91,36 @@ jobs:
               ''|*[!0-9]*) echo "::error::Limita trebuie să fie un număr întreg."; exit 1 ;;
             esac
             ARGUMENTE+=(--limita "$LIMITA")
-            echo "::warning::Rulare limitată artificial la $LIMITA produse."
+            echo "::warning::Rulare limitată artificial la $LIMITA produse per magazin."
           fi
-          # Feedul merge în „public" (se publică pe Pages), raportul în
-          # „raport" (rămâne privat, se descarcă doar din pagina rulării).
+          if [ -n "${FEEDURI:-}" ]; then
+            IFS=',' read -ra LISTA <<< "$FEEDURI"
+            for f in "${LISTA[@]}"; do
+              f="$(echo "$f" | tr -d '[:space:]')"
+              case "$f" in
+                ''|*[!a-z0-9_-]*) echo "::error::Nume de feed invalid: $f"; exit 1 ;;
+              esac
+              ARGUMENTE+=(--feed "$f")
+            done
+          fi
+          # Feedurile merg în „public" (se publică pe Pages), rapoartele în
+          # „raport" (rămân private, se descarcă doar din pagina rulării).
+          # Un feed care pică nu oprește restul: pentru el se păstrează
+          # versiunea aflată live. Cod 7 = folder incomplet, nu se publică.
           python genereaza.py --iesire public --iesire-raport raport "${ARGUMENTE[@]}"
 
       - name: Adaugă pagina de index
         run: python scripts/scrie_index.py public
 
-      - name: Păstrează raportul, fără să-l publice
-        # Raportul conține titluri și numere de produse nepublicate sau
-        # arhivate, deci nu are ce căuta la o adresă publică. Se descarcă din
+      - name: Păstrează rapoartele, fără să le publice
+        # Rapoartele conțin titluri și numere de produse nepublicate sau
+        # arhivate, deci nu au ce căuta la o adresă publică. Se descarcă din
         # pagina rulării, de la secțiunea „Artifacts", doar de cine are acces
         # la repo. Se păstrează 30 de zile.
         if: always()
         uses: actions/upload-artifact@v7.0.1
         with:
-          name: raport
+          name: rapoarte
           path: raport
           retention-days: 30
           if-no-files-found: warn
@@ -110,7 +128,7 @@ jobs:
       - name: Pregătește GitHub Pages
         uses: actions/configure-pages@v6.0.0
 
-      - name: Încarcă feedul pentru publicare
+      - name: Încarcă feedurile pentru publicare
         uses: actions/upload-pages-artifact@v5.0.0
         with:
           path: public
@@ -132,13 +150,36 @@ jobs:
         id: publicare
         uses: actions/deploy-pages@v5.0.1
 
-      - name: Scrie adresele în rezumat
+      - name: Scrie adresa în rezumat
         run: |
           {
             echo "## Publicat"
             echo ""
-            echo "- Feed: ${{ steps.publicare.outputs.page_url }}oceanfavi.xml"
-            echo "- Raport: ${{ steps.publicare.outputs.page_url }}raport.csv"
+            echo "Toate feedurile sunt la ${{ steps.publicare.outputs.page_url }} (lista completă pe pagina de index)."
             echo ""
-            echo "Publicarea poate dura până la 10 minute până se vede la adresa de mai sus."
+            echo "Publicarea poate dura până la 10 minute până se vede la adresă."
           } >> "$GITHUB_STEP_SUMMARY"
+
+  verifica:
+    name: Semnalează feedurile picate
+    # Rulează DUPĂ publicare: feedurile bune ajung online oricum, iar dacă
+    # vreunul a picat, rularea se face roșie și primești mail.
+    needs: [genereaza, publica]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - name: Ia codul din repo
+        uses: actions/checkout@v7.0.1
+      - name: Ia starea generării
+        uses: actions/download-artifact@v7.0.0
+        with:
+          name: github-pages
+          path: pagina
+      - name: Verifică starea fiecărui feed
+        run: |
+          set -euo pipefail
+          tar -xf pagina/artifact.tar -C pagina stare.json
+          python scripts/verifica_stare.py pagina/stare.json

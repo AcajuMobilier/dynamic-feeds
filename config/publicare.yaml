@@ -1,0 +1,7 @@
+# Unde ajung feedurile. Toate se publică pe același GitHub Pages, la nume fixe.
+# Frâna de siguranță citește de aici versiunea aflată live a fiecărui feed.
+url_baza: "https://acajumobilier.github.io/dynamic-feeds/"
+
+# Frâna de siguranță: un feed nou cu mai puține produse decât acest procent
+# din versiunea live NU se publică (rămâne cea veche). Se poate suprascrie per feed.
+prag_minim_procent: 70

@@ -270,6 +270,9 @@ def construieste_descriere(body_html: str, cfg) -> tuple[str, list[tuple[str, st
             # Favi acceptă tagurile goale, fără atribute. Un style sau un
             # title ar trece de filtrul de text și ar putea ascunde un URL.
             tag.attrs = {}
+    # după desfacerea tagurilor, textul rămâne rupt în noduri alăturate
+    # („suport@acaju" + „.ro"); le unim, altfel filtrul de mai jos nu le vede
+    soup.smooth()
     # fără linkuri / emailuri în text (interzise de Favi)
     for nod in soup.find_all(string=True):
         txt = RE_URL.sub("", str(nod))

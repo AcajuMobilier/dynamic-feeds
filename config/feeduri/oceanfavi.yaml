@@ -1,0 +1,31 @@
+# Feedul Favi.ro pentru ocean.ro. Format Heureka, generat de motorul nostru.
+magazin: ocean
+format: favi
+fisier: "oceanfavi.xml"
+
+# POLITICA DE ID — nu se schimbă niciodată: un ID schimbat = produs nou pe Favi,
+# istoric pierdut. Acest feed e live pe Favi cu ID de VARIANTĂ.
+id: varianta
+
+selectie:
+  # intră doar produsele cu acest tag (potrivire exactă, fără majuscule)
+  tag: "OCEANFAVI"
+  # Favi cere pagină publică: produsele nepublicate pe Online Store se exclud și se raportează
+  doar_publicate: true
+  # produsele fără stoc rămân în feed, cu termen de livrare lung
+  exclude_fara_stoc: false
+
+# Setări ale motorului Heureka (Favi). Aceleași pentru toate feedurile Favi.
+favi:
+  producator:
+    # nimic | branduri_reale | ocean   (ce se trimite la MANUFACTURER)
+    mod: "nimic"
+    branduri_reale: ['KONDELA', 'FORTE', 'FURNIVAL']
+  descriere:
+    taguri_permise: ['p', 'b', 'strong', 'i', 'em', 'br', 'ul', 'li', 'ol']
+    # Scaunele au doar „Culoare șezut"; o ridicăm și ca „Culoare" pentru filtrul Favi.
+    deriva_culoare: true
+  imagini:
+    max_alternative: 20
+    latime_minima: 600
+    inaltime_minima: 600

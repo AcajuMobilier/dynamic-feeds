@@ -1,0 +1,66 @@
+# Magazinele Shopify din care se generează feedurile.
+# Fiecare feed din config/feeduri/ spune din ce magazin își ia produsele.
+#
+# Credențialele NU stau aici: fiecare magazin spune doar NUMELE variabilelor
+# de mediu din care se citesc (local din .env, pe GitHub din Secrets).
+
+ocean:
+  nume: "ocean.ro"
+  variabila_store: "SHOPIFY_STORE"
+  variabila_token: "SHOPIFY_TOKEN"
+  livrare:
+    # DELIVERY_DATE (Favi) = zile până la expediere. Favi arată „în stoc" pentru 0–3.
+    zile_in_stoc: 2
+    zile_fara_stoc: 30
+    # Tagurile Shopify au prioritate față de stoc.
+    dupa_tag:
+      livrare14zile: 14
+    # Prețul de livrare se calculează din greutatea variantei, pe grila GLS.
+    # Perechi [limită_kg, preț_lei]; primul prag >= greutate dă prețul.
+    curier: "GLS"
+    preturi_kg:
+    - [0.1, 0]
+    - [3, 35]
+    - [5, 39]
+    - [10, 49]
+    - [15, 59]
+    - [20, 79]
+    - [25, 89]
+    - [31, 119]
+    - [35, 129]
+    - [50, 139]
+    - [70, 169]
+    - [100, 199]
+    - [200, 249]
+    - [300, 299]
+    - [99999, 399]
+
+acaju:
+  nume: "acaju.ro"
+  variabila_store: "SHOPIFY_STORE_ACAJU"
+  variabila_token: "SHOPIFY_TOKEN_ACAJU"
+  # Aceeași grilă GLS ca la ocean (verificat de client, 2026-09). Pe acaju
+  # există în Shopify și „MyGLS Professional Shipping Rate Provider", care
+  # se ignoră: prețul din feed vine din grila manuală de mai jos.
+  livrare:
+    zile_in_stoc: 2
+    zile_fara_stoc: 30
+    dupa_tag:
+      livrare14zile: 14
+    curier: "GLS"
+    preturi_kg:
+    - [0.1, 0]
+    - [3, 35]
+    - [5, 39]
+    - [10, 49]
+    - [15, 59]
+    - [20, 79]
+    - [25, 89]
+    - [31, 119]
+    - [35, 129]
+    - [50, 139]
+    - [70, 169]
+    - [100, 199]
+    - [200, 249]
+    - [300, 299]
+    - [99999, 399]
