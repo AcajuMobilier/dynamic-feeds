@@ -59,8 +59,19 @@ redenumiri:
   Compartimentare: Compartimentare
   Dimensiune masa mare: Dimensiune masă mare
   Dimensiune masa mica: Dimensiune masă mică
+  # --- acaju.ro, aprobate 2026-09-24 ---
+  Înălțime până la șezut: Înălțime șezut
+  Sezut inaltime: Înălțime șezut
+  Totala inaltime: Înălțime totală
+  Somieră pat: Somieră inclusă
+  Spațiu depozitare: Spațiu de depozitare
+  Mater iale: Material
+  Culoare picioar: Culoare picioare
+  Piese: Număr piese
 ignorate:
 - Categorie
+# „Recomandari: Detalii aici" e un link de navigație, nu o specificație (acaju)
+- Recomandari
 unitate_cm:
 - Adâncime
 - Diametru

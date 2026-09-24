@@ -91,6 +91,15 @@ dupa_type:
   Ustensile bucatarie: Bucătărie > Ustensile de bucătărie
   Suporturi bucatarie: Bucătărie > Ustensile de bucătărie
   Borcane si Recipiente bucatarie: Bucătărie > Depozitarea alimentelor
+  # --- acaju.ro, aprobate 2026-09-24 ---
+  Scaun birou: Birou > Scaune de birou
+  Covor Bucatarie: Textile > Covoare
+  Organizatoare bucatarie: Bucătărie > Depozitarea alimentelor
+  Accesorii bucatarie: Bucătărie > Ustensile de bucătărie
+  Lampadar: Corpuri de iluminat > Lampadare
+  Carucior servire: Bucătărie > Mobilă de bucătărie > Cărucioare de bucătărie
+  Hamac: Grădină > Hamacuri
+  # „Catalog" (cataloage tipărite) rămâne intenționat nemapat: nu e mobilă
 
 # Corecții punctuale după titlu. Au prioritate față de „dupa_type".
 # Fiecare intrare: „potrivire" e o expresie regulată căutată în titlu (fără majuscule).
