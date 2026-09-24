@@ -190,3 +190,36 @@ jobs:
           path: stare
       - name: Verifică starea fiecărui feed
         run: python scripts/verifica_stare.py stare/stare.json
+
+  activitate:
+    name: Ține repo-ul activ
+    # GitHub oprește rulările programate ale unui repo public după 60 de zile
+    # fără niciun commit. Dacă ultimul commit e mai vechi de 45 de zile, jobul
+    # face unul gol, ca numărătoarea să pornească de la zero. Push-ul cu
+    # GITHUB_TOKEN nu pornește alte rulări, deci nu apare nicio buclă.
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - name: Ia codul din repo
+        uses: actions/checkout@v7.0.1
+      - name: Commit gol dacă repo-ul a stat prea mult
+        env:
+          ZILE_MAXIM: "45"
+        run: |
+          set -euo pipefail
+          ultimul=$(git log -1 --format=%ct)
+          acum=$(date +%s)
+          zile=$(( (acum - ultimul) / 86400 ))
+          echo "Ultimul commit: acum $zile zile (prag: $ZILE_MAXIM)."
+          if [ "$zile" -lt "$ZILE_MAXIM" ]; then
+            echo "Nimic de făcut."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit --allow-empty -m "Activitate periodică: GitHub ar opri rulările programate după 60 de zile fără commit"
+          git push
+          echo "::notice::Commit gol făcut ca rulările programate să rămână active."

@@ -252,11 +252,19 @@ Logica pentru Favi e portată din `genereaza_feed_favi.py`, generatorul care mer
 
 ## Întreținere
 
-Shopify scoate o versiune nouă de API la fiecare trei luni și le retrage după aproximativ un an. Versiunea folosită e în `src/extragere.py`, la `API_VERSION`. Când se apropie termenul, se schimbă acolo un singur șir.
+Sistemul nu are nimic de făcut în mod curent. Lucrurile de mai jos sunt fie automatizate, fie rare, fie semnalate singure.
 
-Repo-ul e public, deci GitHub dezactivează rulările programate după 60 de zile fără activitate. Orice modificare de fișier resetează numărătoarea. Dacă se întâmplă, GitHub trimite mail și le reactivezi dintr-un buton, din tabul Actions.
+**Rulările programate pe repo public.** GitHub le oprește după 60 de zile fără niciun commit în repo. E automatizat: la fiecare rulare programată, jobul „Ține repo-ul activ" verifică vârsta ultimului commit și, dacă a trecut de 45 de zile, face unul gol. Nu trebuie făcut nimic. Dacă totuși se întâmplă vreodată, GitHub trimite mail, iar reactivarea e un buton: **Actions** → workflow-ul → **Enable workflow**.
 
-Feedul Google acaju trimite, pentru produsele fără stoc, o dată de disponibilitate fixă, `2026-10-15`, moștenită din setările Mulwi. E în `config/feeduri/acajugoogle.yaml` și trebuie actualizată când expiră, sau eliminată împreună cu agenția.
+**Versiunea de API Shopify.** Shopify scoate o versiune nouă la fiecare trei luni și le retrage după aproximativ un an; cea folosită acum, `2026-07`, e disponibilă până pe 16 iulie 2027. După retragere Shopify răspunde automat cu cea mai veche versiune încă disponibilă, deci feedurile nu se opresc, dar sistemul semnalează situația cu un avertisment în Summary-ul rulării. Atunci se schimbă un singur șir, `API_VERSION` din `src/extragere.py`, cu versiunea curentă de pe [shopify.dev](https://shopify.dev/docs/api/usage/versioning).
+
+**Tokenurile Shopify.** Cele din aplicațiile custom create în admin nu expiră. Shopify a anunțat că aplicațiile de acest tip existente continuă să funcționeze, dar nu mai pot fi create altele; dacă vreodată le retrage, sistemul acceptă deja și varianta nouă, cu Client ID și Client secret din Dev Dashboard (vezi „Cum rotesc tokenul").
+
+**Versiunile acțiunilor GitHub** din workflow sunt fixate. Merg ani de zile; GitHub anunță din timp, cu avertismente în rulări, când o versiune de runtime iese din uz.
+
+**Data de backorder din Google acaju.** Pentru produsele fără stoc, feedul trimite o dată fixă, `2026-10-15`, moștenită din setările Mulwi. E în `config/feeduri/acajugoogle.yaml`; trebuie actualizată când expiră sau eliminată de comun acord cu agenția. E singurul lucru din listă cu termen.
+
+**Tipuri de produs noi.** Când apare în Shopify un Type care nu e în maparea Favi, produsele lui apar în raport ca `fara_categorie` și nu intră în feedurile Favi până nu adaugi rândul în `config/categorii_favi.yaml`. Nu e mentenanță, e operare curentă; raportul te anunță.
 
 ---
 

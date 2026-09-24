@@ -70,6 +70,16 @@ def extrage_catalog(magazin, limita: int) -> tuple[list[dict] | None, str]:
         produse = extragere.descarca_catalog(client, "status:active", la_pagina=progres)
     except extragere.EroareShopify as e:
         return None, f"Shopify: {e}"
+    # Shopify retrage versiunile de API după ~un an și răspunde atunci cu cea
+    # mai veche versiune încă disponibilă. Semnalăm din timp, ca schimbarea
+    # din src/extragere.py să nu fie o surpriză.
+    servita = client.versiune_servita
+    if servita and servita != extragere.API_VERSION:
+        mesaj = (f"Shopify a răspuns cu versiunea de API {servita}, nu cu {extragere.API_VERSION} "
+                 f"cerută de cod: versiunea cerută a fost retrasă. Schimbă API_VERSION în "
+                 f"src/extragere.py cu una curentă (vezi README, secțiunea Întreținere).")
+        print(f"  ATENȚIE: {mesaj}")
+        _sumar(f"### ⚠️ Versiune de API Shopify retrasă\n\n{mesaj}\n")
     if limita:
         produse = produse[:limita]
         print(f"  ATENȚIE: catalog limitat artificial la {len(produse)} produse (--limita).")
