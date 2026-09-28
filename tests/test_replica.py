@@ -128,3 +128,61 @@ def test_selectia_google_acaju_exclude_oricare_tag_interzis():
     sel, contor = selectie.selecteaza(produse, cfg)
     assert [p["id"] for p in sel] == ["1"]           # nepublicatul intră, ca la Mulwi
     assert contor["cu_tag_exclus"] == 3
+
+
+def test_pretul_cu_zecimale_fara_zerouri_de_final():
+    """Mulwi scrie 1102.70 ca „1102.7 RON" și 233.85 ca „233.85 RON" (mobilierb2b.ro)."""
+    assert replica.pret_ron("1102.70") == "1102.7 RON"
+    assert replica.pret_ron("233.85") == "233.85 RON"
+    assert replica.pret_ron("1000.00") == "1000 RON"
+
+
+def test_adresa_primeste_parametrul_de_urmarire():
+    assert replica.url_produs({"handle": "x"}, "https://mobilierb2b.ro/products/", "?om=14223") == \
+        "https://mobilierb2b.ro/products/x?om=14223"
+
+
+# ------------------------------------------------------------------ mobilierb2b.ro
+# Referințele Mulwi de aici sunt trunchiate la 2674 de produse de limita
+# planului; pe produsele comune replica trebuie să fie identică. Fixture-urile
+# acoperă: backorder, produs în stoc cu PROMO2 (transport gratuit), produs cu
+# CANAPELEPREMIUM + AVANTAJ, preț cu zecimale.
+CAZURI_B2B = ["7538286624923", "8425546187091", "8425966207315", "7538315952283"]
+
+
+def _item_b2b(feed, pid, omite_goale, data_backorder):
+    cfg = Configurare(feed)
+    cfg.extra["omite_etichete_goale"] = omite_goale
+    if feed == "b2bgoogle":
+        cfg.extra["data_disponibilitate"] = data_backorder
+    produs = json.loads((FIX / f"b2b_{pid}.produs.json").read_text(encoding="utf-8"))
+    text = formate.modul(cfg.format).genereaza([produs], cfg, Raport())
+    return re.search(r"    <item>.*?</item>", text, re.S).group(0)
+
+
+@pytest.mark.parametrize("feed", ["b2bgoogle", "b2bfb"])
+@pytest.mark.parametrize("pid", CAZURI_B2B)
+def test_b2b_itemul_este_identic_cu_mulwi(feed, pid):
+    """Cu etichetele goale și data de backorder păstrate, ca la Mulwi."""
+    referinta = _citeste_exact(FIX / f"{feed}_{pid}.item.txt")
+    assert _item_b2b(feed, pid, False, "2023-09-30T13:00-0800") == referinta
+
+
+@pytest.mark.parametrize("feed", ["b2bgoogle", "b2bfb"])
+@pytest.mark.parametrize("pid", CAZURI_B2B)
+def test_b2b_productie_omite_etichetele_goale_si_data_moarta(feed, pid):
+    referinta = _fara_etichete_goale(_citeste_exact(FIX / f"{feed}_{pid}.item.txt"))
+    referinta = re.sub(r"^ *<g:availability_date>[^<]*</g:availability_date> *\r?\n", "", referinta, flags=re.M)
+    assert _item_b2b(feed, pid, True, "") == referinta
+
+
+def test_b2b_transport_gratuit_doar_la_promo2():
+    item = _item_b2b("b2bgoogle", "8425546187091", True, "")
+    assert "<g:shipping_label>free shipping</g:shipping_label>" in item
+    item = _item_b2b("b2bgoogle", "7538286624923", True, "")
+    assert "<g:shipping_label>paid</g:shipping_label>" in item
+
+
+def test_b2b_facebook_pune_greutatea_in_grame_dupa_descriere():
+    item = _item_b2b("b2bfb", "7538286624923", True, "")
+    assert re.search(r"\]\]> - wh \d+</description>", item)

@@ -173,10 +173,121 @@ def _item_acaju_google(p, cfg, raport):
     return "\n".join(L)
 
 
+# ---------------------------------------------------------------- mobilierb2b.ro
+def _etichete_b2b(p):
+    """custom_label_0..4 comune celor două feeduri b2b, cu spațiile șablonului Mulwi.
+
+    Sursele, verificate pe toate produsele comune: livrarea din stoc;
+    „Canapele Premium" din tagul CANAPELEPREMIUM; „Avantaj client" din tagul
+    AVANTAJ; PROMO1 înaintea PROMO2 (niciun produs nu le are pe amândouă);
+    eticheta 4 e mereu goală la Mulwi.
+    """
+    taguri = set(p.get("taguri") or [])
+    return {
+        "custom_label_1": "Canapele Premium" if "CANAPELEPREMIUM" in taguri else "",
+        "custom_label_2": ("\n" + " " * 12 + "\n" + " " * 12
+                           + (" Avantaj client " if "AVANTAJ" in taguri else "") + "\n" + " " * 8),
+        "custom_label_3": "PROMO1" if "PROMO1" in taguri else ("PROMO2" if "PROMO2" in taguri else ""),
+        "custom_label_4": " \n" + " " * 12 + "\n" + " " * 12 + "\n" + " " * 8,
+    }
+
+
+def _item_b2b_google(p, cfg, raport):
+    v = replica.varianta_principala(p, cfg.extra.get("varianta", "id_minim"))
+    pret, pret_redus, are_comparat = replica.pret_si_pret_redus(v)
+    stoc = replica.in_stoc(v)
+    taguri = set(p.get("taguri") or [])
+    omite = cfg.extra.get("omite_etichete_goale", True)
+    data_backorder = cfg.extra.get("data_disponibilitate", "")
+    et = _etichete_b2b(p)
+    # Mulwi: transport gratuit exact la produsele cu tagul PROMO2
+    gratuit = "PROMO2" in taguri
+    L = ["    <item>",
+         f"    <g:id>{cdata(p['id'])}</g:id>    ",
+         f"    <title>{cdata(replica.titlu_70(p['titlu']))}</title>",
+         f"    <link>{cdata(replica.url_produs(p, cfg.magazin.url_produse, cfg.extra.get('sufix_link', '')))}</link>      ",
+         "    ",
+         f"        <g:price>{pret}</g:price>",
+         f"        <g:sale_price>{pret_redus}</g:sale_price>" + ("  " if are_comparat else ""),
+         "          ",
+         f"    <description>{cdata(replica.descriere_plata(p['descriere_html']))}</description>",
+         f"    <g:product_type>{cdata(p['tip'])}</g:product_type>",
+         f"    <g:google_product_category>{cdata('')}</g:google_product_category>",
+         f"    <g:image_link>{cdata(p['imagini'][0]['url'] if p['imagini'] else '')}</g:image_link>",
+         "    <g:condition>new</g:condition> ",
+         "      ",
+         f"        <g:availability>{'in stock' if stoc else 'backorder'}</g:availability>"]
+    if not stoc and data_backorder:
+        L.append(f"        <g:availability_date>{data_backorder}</g:availability_date> ")
+    L += ["      ",
+          f"    <brand>{cdata(p['vendor'])}</brand>",
+          f"    <g:mpn>{cdata(v.get('sku') or '')}</g:mpn> ",
+          f"    <g:shipping_weight>{replica.greutate_kg_text(v.get('greutate_kg'))}</g:shipping_weight>",
+          "    ", "     "]
+    _eticheta(L, "custom_label_0", "livrare rapida" if stoc else "La Comanda", "        ", omite)
+    L += ["     ", "     ", "    "]
+    _eticheta(L, "custom_label_1", et["custom_label_1"], "        ", omite)
+    L += ["     "]
+    if not (omite and replica.e_gol(et["custom_label_2"])):
+        L.append(f"        <g:custom_label_2>{et['custom_label_2']}</g:custom_label_2>  ")
+    L += ["    "]
+    _eticheta(L, "custom_label_3", et["custom_label_3"], "        ", omite)
+    L += ["     "]
+    _eticheta(L, "custom_label_4", et["custom_label_4"], "        ", omite)
+    L += ["        " if gratuit else "    ",
+          f"        <g:shipping_label>{'free shipping' if gratuit else 'paid'}</g:shipping_label>",
+          "     " if gratuit else "      ",
+          "    ", "    </item>"]
+    return "\n".join(L)
+
+
+def _item_b2b_fb(p, cfg, raport):
+    v = replica.varianta_principala(p, cfg.extra.get("varianta", "id_minim"))
+    pret, pret_redus, _ = replica.pret_si_pret_redus(v)
+    omite = cfg.extra.get("omite_etichete_goale", True)
+    et = _etichete_b2b(p)
+    media = [m["url"] for m in (p.get("media") or [])] or [i["url"] for i in p["imagini"]]
+    # Mulwi scrie greutatea în grame după descriere, în afara CDATA
+    grame = round(float(v.get("greutate_kg") or 0) * 1000)
+    L = ["    <item>",
+         f"    <g:id>{cdata(p['id'])}</g:id> ",
+         f"    <title>{cdata(replica.titlu_70(p['titlu']))}</title>",
+         f"    <link>{cdata(replica.url_produs(p, cfg.magazin.url_produse, cfg.extra.get('sufix_link', '')))}</link>",
+         "    ",
+         f"        <g:price>{pret}</g:price>",
+         f"        <g:sale_price>{pret_redus}</g:sale_price>",
+         "      ",
+         f"    <description>{cdata(replica.descriere_plata(p['descriere_html']))} - wh {grame}</description>",
+         f"    <g:product_type>{cdata(p['tip'])}</g:product_type>",
+         f"    <g:google_product_category>{cdata('')}</g:google_product_category>",
+         f"    <g:image_link>{cdata(p['imagini'][0]['url'] if p['imagini'] else '')}</g:image_link> ",
+         f"    <g:additional_image_link>{cdata('[' + ' '.join(media) + ']')}</g:additional_image_link> ",
+         "    <g:condition>new</g:condition>",
+         # Mulwi trimite „in stock" la toate produsele acestui feed, și la stoc 0
+         "    <g:availability>in stock</g:availability>",
+         f"    <brand>{cdata(p['vendor'])}</brand> ",
+         f"    <g:mpn>{cdata(v.get('sku') or '')}</g:mpn>",
+         "         "]
+    _eticheta(L, "custom_label_0", "livrare rapida" if replica.in_stoc(v) else "La Comanda", "        ", omite)
+    L += ["     ", "     ", "    "]
+    _eticheta(L, "custom_label_1", et["custom_label_1"], "        ", omite)
+    L += ["     "]
+    if not (omite and replica.e_gol(et["custom_label_2"])):
+        L.append(f"        <g:custom_label_2>{et['custom_label_2']}</g:custom_label_2>  ")
+    L += ["    "]
+    _eticheta(L, "custom_label_3", et["custom_label_3"], "        ", omite)
+    L += ["     "]
+    _eticheta(L, "custom_label_4", et["custom_label_4"], "        ", omite)
+    L += ["    ", "    </item>"]
+    return "\n".join(L)
+
+
 SABLOANE = {
     "ocean_google": _item_ocean_google,
     "ocean_fb": _item_ocean_fb,
     "acaju_google": _item_acaju_google,
+    "b2b_google": _item_b2b_google,
+    "b2b_fb": _item_b2b_fb,
 }
 
 

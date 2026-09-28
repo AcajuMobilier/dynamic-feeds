@@ -1,6 +1,6 @@
 # Feeduri dinamice pentru marketplace-uri și campanii
 
-Generează automat, la fiecare 2 ore, toate feedurile de produse pentru magazinele Shopify **ocean.ro** și **acaju.ro**, direct din Shopify Admin API, și le publică la adrese fixe pe GitHub Pages. Înlocuiește feedurile generate până acum de aplicația Mulwi Feeds.
+Generează automat, la fiecare 2 ore, toate feedurile de produse pentru magazinele Shopify **ocean.ro**, **acaju.ro** și **mobilierb2b.ro**, direct din Shopify Admin API, și le publică la adrese fixe pe GitHub Pages. Înlocuiește feedurile generate până acum de aplicația Mulwi Feeds.
 
 Adresa de bază a tuturor feedurilor:
 
@@ -23,6 +23,8 @@ La adresa de bază e o pagină care arată, pentru fiecare feed, câte produse a
 | Google Shopping acaju.ro | `acajugoogle.xml` | `feed.mulwi.com/f/velluttoro/s1nz-google_shopping.xml` | Merchant Center | agenția de Ads, în Merchant Center |
 | DSA acaju.ro | `acajudsa.csv` | `feed.mulwi.com/f/velluttoro/custom_csv.csv` | Google Ads, campaniile DSA | agenția de Ads, în Google Ads |
 | RTB House acaju.ro | `acajurtb.xml` | `feed.mulwi.com/f/velluttoro/rtb_house.xml` | RTB House | contactul de la RTB House |
+| Google Shopping mobilierb2b.ro | `b2bgoogle.xml` | `feed.mulwi.com/f/loccoacaju/custom.xml` | Merchant Center b2b | agenția de Ads, în Merchant Center |
+| Facebook mobilierb2b.ro | `b2bfb.xml` | `feed.mulwi.com/f/loccoacaju/fbads.xml` | catalogul Facebook b2b | cine administrează catalogul Facebook |
 
 Adresa completă a unui feed = adresa de bază + numele fișierului, de exemplu `https://acajumobilier.github.io/dynamic-feeds/acajugoogle.xml`.
 
@@ -30,7 +32,7 @@ Adresa completă a unui feed = adresa de bază + numele fișierului, de exemplu 
 
 ### Două feluri de feeduri
 
-**Replicile** (Google, Facebook, DSA, RTB) reproduc feedurile Mulwi **identic**: aceleași ID-uri, aceleași valori, aceleași câmpuri, în aceeași ordine. Campaniile de pe ele au fost configurate de colaboratori externi și nu trebuie să vadă nicio diferență. Singura schimbare, agreată: etichetele `custom_label` goale sau formate doar din spații nu se mai trimit. Regulile de derivare au fost deduse comparând feedurile Mulwi cu datele din Shopify și verificate independent, câmp cu câmp; sunt documentate în [`docs/reguli_mulwi_2026-09-23.json`](docs/reguli_mulwi_2026-09-23.json), iar raportul de diff din ziua punerii în funcțiune e în [`docs/diff_mulwi_2026-09-23.md`](docs/diff_mulwi_2026-09-23.md).
+**Replicile** (Google, Facebook, DSA, RTB) reproduc feedurile Mulwi **identic**: aceleași ID-uri, aceleași valori, aceleași câmpuri, în aceeași ordine. Excepție de conținut la mobilierb2b.ro: feedurile Mulwi erau trunchiate de limita planului la 2674 de produse, ale noastre conțin tot catalogul activ, circa 4400; pe produsele comune sunt identice, iar data de disponibilitate moartă din 2023 nu se mai trimite. Campaniile de pe ele au fost configurate de colaboratori externi și nu trebuie să vadă nicio diferență. Singura schimbare, agreată: etichetele `custom_label` goale sau formate doar din spații nu se mai trimit. Regulile de derivare au fost deduse comparând feedurile Mulwi cu datele din Shopify și verificate independent, câmp cu câmp; sunt documentate în [`docs/reguli_mulwi_2026-09-23.json`](docs/reguli_mulwi_2026-09-23.json), iar raportul de diff din ziua punerii în funcțiune e în [`docs/diff_mulwi_2026-09-23.md`](docs/diff_mulwi_2026-09-23.md).
 
 **Feedurile Favi** folosesc motorul nostru, în formatul Heureka cerut de Favi: parametrii extrași din tabelul de specificații, categorii mapate pe arborele Favi, dimensiuni redenumite pe filtrele Favi, termen de livrare după stoc și preț de livrare pe grila GLS. La acaju, feedul Mulwi era de fapt în format Google; cel nou păstrează aceleași ID-uri de produs, deci istoricul pe Favi nu se pierde.
 
@@ -180,6 +182,7 @@ Tokenurile nu sunt niciodată în cod sau în git. Stau în Secrets, pe GitHub, 
 | --- | --- |
 | ocean.ro | `SHOPIFY_STORE`, `SHOPIFY_TOKEN` |
 | acaju.ro | `SHOPIFY_STORE_ACAJU`, `SHOPIFY_TOKEN_ACAJU` |
+| mobilierb2b.ro | `SHOPIFY_STORE_B2B`, `SHOPIFY_TOKEN_B2B` |
 
 **Aplicație custom creată în admin (token care începe cu `shpat_`):**
 
@@ -200,7 +203,7 @@ Ai nevoie de Python 3.11 sau mai nou.
 pip install -r requirements.txt
 ```
 
-Copiază `.env.example` în `.env` și completează secretele ambelor magazine. Apoi:
+Copiază `.env.example` în `.env` și completează secretele celor trei magazine. Apoi:
 
 ```bash
 python genereaza.py

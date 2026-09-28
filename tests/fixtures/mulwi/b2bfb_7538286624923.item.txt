@@ -1,0 +1,37 @@
+    <item>
+    <g:id><![CDATA[7538286624923]]></g:id> 
+    <title><![CDATA[Set living TIFFANY II-2, grej, PAL laminat, 3 piese]]></title>
+    <link><![CDATA[https://mobilierb2b.ro/products/set-living-tiffany-ii-2-grej-pal-laminat-3-piese?om=14224]]></link>
+    
+        <g:price>1861 RON</g:price>
+        <g:sale_price>1861 RON</g:sale_price>
+      
+    <description><![CDATA[SET LIVING TIFFANY II-2, GREJ, PAL LAMINAT, 3 PIESE. Pachet format din:. Vitrina cu un sertar si 3 usi (MSBP-180-KOM_1D1W1S1B-225-01). Comoda TV (MSBP-180-SZFK_RTV_2S-225-01). Masuta cafea (MSBP-180-LAW/110-225-01). Dimensiuni vitrina cu un sertar si 3 usi:. Lungime: 94 cm. Adancime: 37 cm. Inaltime: 125.3 cm. Dimensiuni comoda TV:. Lungime: 130 cm. Adancime: 37 cm. Inaltime: 50.4 cm. Dimensiuni masuta cafea:. Lungime: 110 cm. Adancime: 60 cm. Inaltime: 50 cm. Caracteristici:. Materiale: PAL lam]]> - wh 101000</description>
+    <g:product_type><![CDATA[Living]]></g:product_type>
+    <g:google_product_category><![CDATA[]]></g:google_product_category>
+    <g:image_link><![CDATA[https://cdn.shopify.com/s/files/1/0435/2815/9387/files/Set_living_TIFFANY_II_crem_PAL_laminat_3_piese.webp?v=1784095091]]></g:image_link> 
+    <g:additional_image_link><![CDATA[[https://cdn.shopify.com/s/files/1/0435/2815/9387/files/Set_living_TIFFANY_II_crem_PAL_laminat_3_piese.webp?v=1784095091 https://cdn.shopify.com/s/files/1/0435/2815/9387/files/Vitrina_TIFFANY_II_crem_PAL_94x37x125_cm_6157011c-81d9-4ca0-aa3b-372f6564529f.webp?v=1784095043 https://cdn.shopify.com/s/files/1/0435/2815/9387/files/Comoda_TV_TIFFANY_II_crem_PAL_laminat_130x37x50_cm_12f16112-4d6a-4577-a8cc-73afa6c3052e.webp?v=1784095043 https://cdn.shopify.com/s/files/1/0435/2815/9387/files/Masuta_TIFFANY_crem_PAL_laminat_110x60x50_cm_15b181a8-0fe6-4408-9c63-efc32e65eb55.webp?v=1784095043 https://cdn.shopify.com/s/files/1/0435/2815/9387/files/komoda-dwudrzwiowa-z-barkiem-i-szuflada-tiffany-ii_3_fa0e314c-cd89-49af-a1f0-eb093378162f.webp?v=1784095043 https://cdn.shopify.com/s/files/1/0435/2815/9387/files/szafka-rtv-z-2-szufladami-tiffany-ii-fineline-crem_3_8d4365db-581f-400f-8d0b-ab6cb66ed293.webp?v=1784095043 https://cdn.shopify.com/s/files/1/0435/2815/9387/files/lawa-z-polka-tiffany-ii-110-fineline-crema_2_6679a6c2-9811-4e4b-b8b1-d43802571ece.webp?v=1784095043]]]></g:additional_image_link> 
+    <g:condition>new</g:condition>
+    <g:availability>in stock</g:availability>
+    <brand><![CDATA[MOBILIER B2B-M]]></brand> 
+    <g:mpn><![CDATA[PACHET-LIVING-TIFFANY-II-2]]></g:mpn>
+         
+        <g:custom_label_0>La Comanda</g:custom_label_0>
+     
+     
+    
+        <g:custom_label_1></g:custom_label_1>
+     
+        <g:custom_label_2>
+            
+             Avantaj client 
+        </g:custom_label_2>  
+    
+        <g:custom_label_3></g:custom_label_3>
+     
+        <g:custom_label_4> 
+            
+            
+        </g:custom_label_4>
+    
+    </item>

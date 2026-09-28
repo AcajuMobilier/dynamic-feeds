@@ -40,6 +40,10 @@ MULWI = {
     "acajurtb": "https://feed.mulwi.com/f/velluttoro/rtb_house.xml",
     "oceangoogle": "https://feed.mulwi.com/f/ocean-acaju/shopping.xml",
     "oceanfb": "https://feed.mulwi.com/f/ocean-acaju/custom.xml",
+    # b2b: referințele Mulwi sunt TRUNCHIATE la 2674 de produse de limita
+    # planului; la noi intră tot catalogul activ, deci „doar la noi" e așteptat
+    "b2bgoogle": "https://feed.mulwi.com/f/loccoacaju/custom.xml",
+    "b2bfb": "https://feed.mulwi.com/f/loccoacaju/fbads.xml",
     # feedul Favi de acaju e in format Google la Mulwi; noi trecem pe Heureka,
     # deci comparam doar ID-urile
     "acajufavi": "https://feed.mulwi.com/f/velluttoro/1yc0-heureka.xml",
@@ -111,7 +115,9 @@ def scrie_raport(rezultate: dict, moment: str) -> Path:
               f"| ID-uri doar la noi | {len(r['doar_noi'])} | |",
               f"| ID-uri doar la Mulwi | | {len(r['doar_mulwi'])} |", ""]
         if r["doar_noi"]:
-            L.append(f"Doar la noi (ex.): {', '.join(r['doar_noi'][:10])}")
+            nota = (" — așteptat: feedul Mulwi e trunchiat de limita planului, al nostru are tot catalogul"
+                    if feed.startswith("b2b") else "")
+            L.append(f"Doar la noi (ex.): {', '.join(r['doar_noi'][:10])}{nota}")
         if r["doar_mulwi"]:
             L.append(f"Doar la Mulwi (ex.): {', '.join(r['doar_mulwi'][:10])}")
         if r["doar_noi"] or r["doar_mulwi"]:

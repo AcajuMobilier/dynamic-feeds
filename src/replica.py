@@ -82,11 +82,12 @@ def titlu_70(titlu: str) -> str:
     return curata_control(titlu or "")[:70]
 
 
-def url_produs(p: dict, prefix: str) -> str:
+def url_produs(p: dict, prefix: str, sufix: str = "") -> str:
     """Adresa produsului construită din handle, ca la Mulwi: se emite și pentru
     produsele nepublicate pe Online Store, iar handle-ul cu diacritice rămâne
-    neencodat (Shopify l-ar da percent-encodat în onlineStoreUrl)."""
-    return prefix + (p.get("handle") or "")
+    neencodat (Shopify l-ar da percent-encodat în onlineStoreUrl). Unele feeduri
+    Mulwi adaugă un parametru de urmărire fix (?om=NNNNN)."""
+    return prefix + (p.get("handle") or "") + (sufix or "")
 
 
 def descriere_plata(html: str, limita: int = 500) -> str:

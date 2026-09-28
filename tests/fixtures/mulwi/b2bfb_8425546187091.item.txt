@@ -1,0 +1,37 @@
+    <item>
+    <g:id><![CDATA[8425546187091]]></g:id> 
+    <title><![CDATA[Vitrina pentru carti Kent, 70,5X43X204,5 CM]]></title>
+    <link><![CDATA[https://mobilierb2b.ro/products/vitrina-pentru-carti-kent-70-5x43x204-5-cm?om=14224]]></link>
+    
+        <g:price>918 RON</g:price>
+        <g:sale_price>918 RON</g:sale_price>
+      
+    <description><![CDATA[DE CE SA ALEGI VITRINA PENTRU CARTI KENT, CASTAN, STRUCTURA DIN LEMN SI MDF, FRONT CU STICLA, 70,5X43X204,5 CM LXAXH?. Deoarece aceasta vitrina pt carti Kent surprinde cu aspectul elegant și frumusețea atemporală.. Deschiderea din dreapta a geamului securizat este o garanție a siguranței în utilizarea zilnică a mobilierului.. Efectul uimitor al mobilierului se datorează culorii calde a castanului.. Balamalele de marcă sunt o garanție a funcționării netede a fronturilor și permite ajustarea preci]]> - wh 47000</description>
+    <g:product_type><![CDATA[Vitrina]]></g:product_type>
+    <g:google_product_category><![CDATA[]]></g:google_product_category>
+    <g:image_link><![CDATA[https://cdn.shopify.com/s/files/1/0435/2815/9387/products/mediumb_2_f8a4c475-669b-4534-9fa6-30e3d68d1b8b.jpg?v=1685710931]]></g:image_link> 
+    <g:additional_image_link><![CDATA[[https://cdn.shopify.com/s/files/1/0435/2815/9387/products/mediumb_2_f8a4c475-669b-4534-9fa6-30e3d68d1b8b.jpg?v=1685710931 https://cdn.shopify.com/s/files/1/0435/2815/9387/products/mediumb_4f327614-5b17-4924-892d-356135ca024e.jpg?v=1685710931 https://cdn.shopify.com/s/files/1/0435/2815/9387/products/mediumb_1_53f49ad7-1569-4d24-a8f1-49a3ef3d5124.jpg?v=1685710931]]]></g:additional_image_link> 
+    <g:condition>new</g:condition>
+    <g:availability>in stock</g:availability>
+    <brand><![CDATA[MOBILIER B2B-BR]]></brand> 
+    <g:mpn><![CDATA[S10-EWIT1DL-KA]]></g:mpn>
+         
+        <g:custom_label_0>livrare rapida</g:custom_label_0>
+     
+     
+    
+        <g:custom_label_1></g:custom_label_1>
+     
+        <g:custom_label_2>
+            
+            
+        </g:custom_label_2>  
+    
+        <g:custom_label_3>PROMO2</g:custom_label_3>
+     
+        <g:custom_label_4> 
+            
+            
+        </g:custom_label_4>
+    
+    </item>

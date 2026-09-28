@@ -1,0 +1,19 @@
+# Facebook Dynamic Ads pentru mobilierb2b.ro. Înlocuiește feedul Mulwi „fbads.xml"
+# (feed.mulwi.com/f/loccoacaju/fbads.xml), TRUNCHIAT la 2674 de produse de
+# limita planului Mulwi; al nostru conține tot catalogul activ.
+# REPLICĂ IDENTICĂ pe produsele comune (vezi oceangoogle.yaml).
+magazin: b2b
+format: google
+fisier: "b2bfb.xml"
+id: produs
+
+selectie:
+  doar_publicate: false
+
+extra:
+  sablon: "b2b_fb"
+  titlu_canal: "Google Shopping mobilierb2b.ro"
+  link_canal: "https://mobilierb2b.ro"
+  sufix_link: "?om=14224"
+  varianta: "id_minim"
+  omite_etichete_goale: true

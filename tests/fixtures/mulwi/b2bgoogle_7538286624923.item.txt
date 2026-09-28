@@ -1,0 +1,44 @@
+    <item>
+    <g:id><![CDATA[7538286624923]]></g:id>    
+    <title><![CDATA[Set living TIFFANY II-2, grej, PAL laminat, 3 piese]]></title>
+    <link><![CDATA[https://mobilierb2b.ro/products/set-living-tiffany-ii-2-grej-pal-laminat-3-piese?om=14223]]></link>      
+    
+        <g:price>1861 RON</g:price>
+        <g:sale_price>1861 RON</g:sale_price>
+          
+    <description><![CDATA[SET LIVING TIFFANY II-2, GREJ, PAL LAMINAT, 3 PIESE. Pachet format din:. Vitrina cu un sertar si 3 usi (MSBP-180-KOM_1D1W1S1B-225-01). Comoda TV (MSBP-180-SZFK_RTV_2S-225-01). Masuta cafea (MSBP-180-LAW/110-225-01). Dimensiuni vitrina cu un sertar si 3 usi:. Lungime: 94 cm. Adancime: 37 cm. Inaltime: 125.3 cm. Dimensiuni comoda TV:. Lungime: 130 cm. Adancime: 37 cm. Inaltime: 50.4 cm. Dimensiuni masuta cafea:. Lungime: 110 cm. Adancime: 60 cm. Inaltime: 50 cm. Caracteristici:. Materiale: PAL lam]]></description>
+    <g:product_type><![CDATA[Living]]></g:product_type>
+    <g:google_product_category><![CDATA[]]></g:google_product_category>
+    <g:image_link><![CDATA[https://cdn.shopify.com/s/files/1/0435/2815/9387/files/Set_living_TIFFANY_II_crem_PAL_laminat_3_piese.webp?v=1784095091]]></g:image_link>
+    <g:condition>new</g:condition> 
+      
+        <g:availability>backorder</g:availability>
+        <g:availability_date>2023-09-30T13:00-0800</g:availability_date> 
+      
+    <brand><![CDATA[MOBILIER B2B-M]]></brand>
+    <g:mpn><![CDATA[PACHET-LIVING-TIFFANY-II-2]]></g:mpn> 
+    <g:shipping_weight>101 kg</g:shipping_weight>
+    
+     
+        <g:custom_label_0>La Comanda</g:custom_label_0>
+     
+     
+    
+        <g:custom_label_1></g:custom_label_1>
+     
+        <g:custom_label_2>
+            
+             Avantaj client 
+        </g:custom_label_2>  
+    
+        <g:custom_label_3></g:custom_label_3>
+     
+        <g:custom_label_4> 
+            
+            
+        </g:custom_label_4>
+    
+        <g:shipping_label>paid</g:shipping_label>
+      
+    
+    </item>

@@ -1,0 +1,37 @@
+    <item>
+    <g:id><![CDATA[8425966207315]]></g:id> 
+    <title><![CDATA[Canapea Parma 3 locuri extensibila, piele naturala, maro, 195x96x95 cm]]></title>
+    <link><![CDATA[https://mobilierb2b.ro/products/canapea-parma-3-locuri-extensibila-piele-naturala-maro-195x96x95-cm?om=14224]]></link>
+    
+        <g:price>5497 RON</g:price>
+        <g:sale_price>5497 RON</g:sale_price>
+      
+    <description><![CDATA[CANAPEA 3 LOCURI PARMA EXTENSIBILA, PIELE NATURALA MARO, CU SAU FARA FUNCTIE PENTRU DORMIT, 195X96X95 CM. Dimensiuni:. Lungime: 195 cm;. Inaltime: 95 cm;. Inaltime sezut fata de sol: 45 cm;. Adancime totala: 96 cm.. Suprafata de dormit: 195 cm x 140 cm. Detalii tehnice:. Structura canapelei este realizata preponderent din lemn masiv, avand o rezistenta iesita din comun la utilizare zilnica intensa. In cadrul canapelei se mai regasesc si piese din metal. Structura suprafetei include arcuri bonell]]> - wh 70000</description>
+    <g:product_type><![CDATA[Canapele]]></g:product_type>
+    <g:google_product_category><![CDATA[]]></g:google_product_category>
+    <g:image_link><![CDATA[https://cdn.shopify.com/s/files/1/0435/2815/9387/products/canapea_extensibila_3_locuri_parma_l195xa96xh95_cm_2.jpg?v=1685750827]]></g:image_link> 
+    <g:additional_image_link><![CDATA[[https://cdn.shopify.com/s/files/1/0435/2815/9387/products/canapea_extensibila_3_locuri_parma_l195xa96xh95_cm_2.jpg?v=1685750827 https://cdn.shopify.com/s/files/1/0435/2815/9387/products/NW.png?v=1686922514 https://cdn.shopify.com/s/files/1/0435/2815/9387/products/NW2.png?v=1686922514 https://cdn.shopify.com/s/files/1/0435/2815/9387/products/NW1.png?v=1686922514]]]></g:additional_image_link> 
+    <g:condition>new</g:condition>
+    <g:availability>in stock</g:availability>
+    <brand><![CDATA[MOBILIER B2B-W]]></brand> 
+    <g:mpn><![CDATA[PARMA-3L-MADRAS-A4]]></g:mpn>
+         
+        <g:custom_label_0>La Comanda</g:custom_label_0>
+     
+     
+    
+        <g:custom_label_1>Canapele Premium</g:custom_label_1>
+     
+        <g:custom_label_2>
+            
+             Avantaj client 
+        </g:custom_label_2>  
+    
+        <g:custom_label_3></g:custom_label_3>
+     
+        <g:custom_label_4> 
+            
+            
+        </g:custom_label_4>
+    
+    </item>

@@ -1,0 +1,23 @@
+# Google Shopping pentru mobilierb2b.ro. Înlocuiește feedul Mulwi „custom.xml"
+# (feed.mulwi.com/f/loccoacaju/custom.xml), care era TRUNCHIAT de limita
+# planului Mulwi la 2674 de produse; al nostru conține tot catalogul activ.
+# REPLICĂ IDENTICĂ pe produsele comune (vezi oceangoogle.yaml).
+magazin: b2b
+format: google
+fisier: "b2bgoogle.xml"
+id: produs
+
+selectie:
+  doar_publicate: false
+
+extra:
+  sablon: "b2b_google"
+  titlu_canal: "Google Shopping mobilierb2b.ro"
+  link_canal: "https://mobilierb2b.ro"
+  # parametrul de urmărire pe care Mulwi îl pune pe fiecare link al acestui feed
+  sufix_link: "?om=14223"
+  varianta: "id_minim"
+  omite_etichete_goale: true
+  # Mulwi trimitea la produsele fără stoc o dată de disponibilitate moartă
+  # (2023-09-30); agreat cu clientul: NU se trimite.
+  data_disponibilitate: ""

@@ -1,0 +1,65 @@
+{
+ "id": "7538315952283",
+ "handle": "masuta-tiffany-tiffy-alb-vintage-110x60x50-cm",
+ "titlu": "Masuta Tiffany (Tiffy), alb vintage, 110x60x50 cm",
+ "descriere_html": "<p><strong>MASUTA Tiffany (Tiffy), ALB VINTAGE, 110X60X50 CM</strong></p>\n<p> </p>\n<ul></ul>\n<p><strong>Dimensiuni:</strong></p>\n<ul>\n<li>Lungime: 110 cm</li>\n<li>Adancime: 60 cm</li>\n<li>Inaltime: 50 cm</li>\n</ul>\n<p><strong>Caracteristici:</strong></p>\n<ul>\n<li>Materiale: pal laminat</li>\n<li>Sarcina maxima: 5 kg</li>\n<li>Forma: dreptunghiulara</li>\n</ul>\n<p><strong>Utilizarea produsului:</strong></p>\n<ul>\n<li>Mobila se curăță cu o lavetă sau cu un prosop de hârtie ușor umed.</li>\n<li>A se evita utilizarea produselor chimice, cu excepția celor special concepute pentru îngrijirea mobilei.</li>\n</ul>\n<p><strong>Asamblare: </strong></p>\n<ul>\n<li>Produsul nu este montat.</li>\n<li>Asamblarea este rapida si usoara, putand fi executata pe baza instructiunilor de montaj din colet.</li>\n</ul>",
+ "vendor": "MOBILIER B2B-M",
+ "tip": "Masuta",
+ "taguri": [
+  "19TVA",
+  "adancime-18",
+  "alb",
+  "AVANTAJ",
+  "COLECTIA TIFFANY",
+  "COLECTII STIL CLASIC",
+  "de activat",
+  "inaltime-120",
+  "INIMA MAGENTA",
+  "lungime-110",
+  "lungime-84",
+  "Masuta Living",
+  "Mobilier living",
+  "Mobilier pentru living",
+  "NOUTATI"
+ ],
+ "status": "ACTIVE",
+ "url": "https://mobilierb2b.ro/products/masuta-tiffany-tiffy-alb-vintage-110x60x50-cm",
+ "stoc_total": 23,
+ "imagini": [
+  {
+   "url": "https://cdn.shopify.com/s/files/1/0435/2815/9387/products/TIFFANYlawa.jpg?v=1667903556",
+   "latime": 635,
+   "inaltime": 483
+  },
+  {
+   "url": "https://cdn.shopify.com/s/files/1/0435/2815/9387/products/Tiffany-pok-dzienny_1.jpg?v=1667903556",
+   "latime": 4188,
+   "inaltime": 3660
+  }
+ ],
+ "media": [
+  {
+   "url": "https://cdn.shopify.com/s/files/1/0435/2815/9387/products/TIFFANYlawa.jpg?v=1667903556",
+   "tip": "IMAGE"
+  },
+  {
+   "url": "https://cdn.shopify.com/s/files/1/0435/2815/9387/products/Tiffany-pok-dzienny_1.jpg?v=1667903556",
+   "tip": "IMAGE"
+  }
+ ],
+ "variante": [
+  {
+   "id": "42978460893339",
+   "titlu": "Default Title",
+   "sku": "MSBP-035-LAW/110-058-01/V",
+   "barcode": "",
+   "pret": "233.85",
+   "pret_comparat": null,
+   "pozitie": 1,
+   "stoc": 23,
+   "politica_stoc": "DENY",
+   "greutate_kg": 20.0
+  }
+ ],
+ "variante_incomplete": false
+}
