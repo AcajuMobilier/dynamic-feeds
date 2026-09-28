@@ -68,3 +68,16 @@ acaju:
     - [200, 249]
     - [300, 299]
     - [99999, 399]
+
+b2b:
+  nume: "mobilierb2b.ro"
+  url_produse: "https://mobilierb2b.ro/products/"
+  variabila_store: "SHOPIFY_STORE_B2B"
+  variabila_token: "SHOPIFY_TOKEN_B2B"
+  # Nu are feed Favi; secțiunea de livrare rămâne cea implicită.
+  livrare:
+    zile_in_stoc: 2
+    zile_fara_stoc: 30
+    dupa_tag: {}
+    curier: ""
+    preturi_kg: []

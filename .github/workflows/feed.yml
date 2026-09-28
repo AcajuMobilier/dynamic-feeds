@@ -73,6 +73,8 @@ jobs:
           SHOPIFY_TOKEN: ${{ secrets.SHOPIFY_TOKEN }}
           SHOPIFY_STORE_ACAJU: ${{ secrets.SHOPIFY_STORE_ACAJU }}
           SHOPIFY_TOKEN_ACAJU: ${{ secrets.SHOPIFY_TOKEN_ACAJU }}
+          SHOPIFY_STORE_B2B: ${{ secrets.SHOPIFY_STORE_B2B }}
+          SHOPIFY_TOKEN_B2B: ${{ secrets.SHOPIFY_TOKEN_B2B }}
           # Opțiunile din butonul de rulare manuală ajung aici ca variabile de
           # mediu, nu direct în comandă: altfel textul scris de om ar fi
           # executat de shell.
